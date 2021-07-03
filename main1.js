@@ -13,7 +13,6 @@ function whichIndex(name) {
     };
 }
 
-
 function fileInfo(myPath, cb){
     const name = fs.readdir(myPath, (err, name) => {
         const result = []
@@ -48,7 +47,7 @@ function fileInfo(myPath, cb){
         )
     })
 };
-var cb
+
 fileInfo("./main/", function cb(result, i) {
 
     console.log(">> ", result);
