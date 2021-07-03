@@ -20,11 +20,10 @@ function fileInfo(myPath, cb){
         name.forEach((name, index) => 
 
             fs.stat(path.join(myPath, name), (err, stats) => {
-                stats = stats
-
                 const time = stats.ctime
+
                 const size = stats.size
-                
+
                 fs.readFile(path.join(myPath, name), 'utf-8',(err, content) => {
                         
                     result.splice(
@@ -37,7 +36,7 @@ function fileInfo(myPath, cb){
                         content ,
                     });
                     
-                    if (index == 2) {
+                    if (result[0,1,2] !== undefined) {
                         cb(result)
                     };
                     return
@@ -49,7 +48,6 @@ function fileInfo(myPath, cb){
 };
 
 fileInfo("./main/", function cb(result, i) {
-
     console.log(">> ", result);
     
 })
