@@ -6,7 +6,7 @@ const results = []
 
 fs.promises.readdir(dataPath)
     .then(files => {
-        files.map((file, index) => fs.promises.stat(path.join(dataPath, file))
+        return Promise.all(files.map((file, index) => fs.promises.stat(path.join(dataPath, file))
         .then(stats => {
             results[index] = {
                 name: file,
@@ -14,8 +14,7 @@ fs.promises.readdir(dataPath)
                 size: stats.size,
             }
             return results
-        }))
-        return Promise.all(results)
+        })))
     })
     .then(results => {
         console.log(">> ", results);
