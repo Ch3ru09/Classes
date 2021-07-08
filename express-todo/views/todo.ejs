@@ -1,11 +1,24 @@
 <html>
   <head>
     <title>Lobby of Todo</title>
-    <link rel = "icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
+    <link rel="icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
     <%- include('todocss.ejs'); %>
   </head>
   <body>
         <h1> Todo </h1>
+
+        <form action="" method="POST" class="addForm">
+          <div class="name">
+            <input type="text" name="name" id="textName" placeholder="Task name" required>
+          </div>
+          <div class="description">
+            <input type="text" name="description" id="descroption" placeholder="description (optional)">
+          </div>
+          <div class="submit">
+            <input type="submit" value="Add Task">
+          </div>
+
+        </form>
 
         <ul>       
           <button type="submit" id="addTask">
