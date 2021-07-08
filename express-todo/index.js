@@ -15,7 +15,11 @@ app.get('/', (req, res) => {
   res.render('../lobby/lobby')
 })
 
-app.get('/users', (req, res) => {
+app.post('/redirect', (req,res) => {
+  res.redirect("/Todo")
+})
+
+app.get('/Todo', (req, res) => {
   // res.render('index', { currentTime: new Date() })
   res.render('todo', { users })
 })
