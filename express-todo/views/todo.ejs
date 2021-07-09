@@ -5,26 +5,30 @@
     <%- include('todocss.ejs'); %>
   </head>
   <body>
-        <h1> Todo </h1>
+    <ul>
+      <h1> Todo </h1>
 
-        <form action="" method="POST" class="addForm">
-          <div class="name">
-            <input type="text" name="name" id="textName" placeholder="Task name" required>
-          </div>
-          <div class="description">
-            <input type="text" name="description" id="descroption" placeholder="description (optional)">
-          </div>
-          <div class="submit">
-            <input type="submit" value="Add Task">
-          </div>
+      <form action="" method="POST" class="addForm">
 
-        </form>
+        <div class="name">
+          <input type="text" name="name" id="textName" placeholder="task name" required>
+        </div>
 
-        <ul>       
-          <button type="submit" id="addTask">
-            <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="50" height="50">
-            <h2>Add task</h2>
-          </button>
-        </ul>
-    </body>
+        <div class="description">
+          <input type="text" name="description" id="description" placeholder="description (optional)">
+        </div>
+
+        <button type="submit" id="addTask" class="addTask">
+          <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="40" height="40" class="plus">
+          &emsp;
+          <h2>Add task</h2>
+        </button>
+        
+      </form>
+    </ul>
+    <table>
+      
+    </table>
+
+  </body>
 </html>
