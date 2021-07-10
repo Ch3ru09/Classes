@@ -21,7 +21,6 @@ function fileInfo(myPath, cb){
 
             fs.stat(path.join(myPath, name), (err, stats) => {
                 const time = stats.ctime
-
                 const size = stats.size
 
                 fs.readFile(path.join(myPath, name), 'utf-8',(err, content) => {
@@ -41,7 +40,6 @@ function fileInfo(myPath, cb){
                     };
                     return
                 })
-
             })
         )
     })

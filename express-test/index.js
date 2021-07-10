@@ -49,7 +49,7 @@ app.post('/users/:id', (req, res) => {
       }
     }
   }
-  res.send('OK')
+  res.redirect('/users')
 })
 
 app.listen(port, () => {

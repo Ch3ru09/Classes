@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title> &ensp; Lobby of Todo</title>
+    <link rel="icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
+    <%- include('todocss.ejs'); %>
+  </head>
+  <body>
+    <ul>
+      <h1> Todo </h1>
+
+      <form action="/Todo" method="POST" class="addForm">
+
+        <div class="name">
+          <input type="text" name="name" id="name" placeholder="&nbsp; task name" required>
+        </div>
+
+        <div class="description">
+          <input type="text" name="description" id="description" placeholder="&nbsp; description (optional)">
+        </div>
+
+        <button type="submit" id="addTask" class="addTask">
+          <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="40" height="40" class="plus">
+          &emsp;
+          <h2>Add task</h2>
+        </button>
+        
+      </form>
+    </ul>
+    <table border='1' class='table'>
+      <thead>
+        <th></th>
+        <th>name</th>
+        <th>description</th>
+        <th>checked?</th>
+      </thead>
+      <tbody>
+        <% tasks.forEach(task => { %>
+          <tr>
+            <td class="checkbox">
+              <form action="/Todo/<% task.id %>" method="POST">
+                <input type="checkbox" name="checkbox" value="checked" <%= task.done ? 'checked=checked' : '' %> onChange="this.form.submit()">
+              </form>
+            </td>
+            <td><%= task.name %></td>
+            <td><%= task.description %></td>
+            <td><%= task.done %> </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    
+    <script>
+    </script> 
+    
+  </body>
+</html>
