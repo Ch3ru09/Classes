@@ -16,24 +16,24 @@ app.get('/', (req, res) => {
 })
 
 app.post('/redirect', (req, res) => {
-  res.redirect(301, "/Todo")
+  res.redirect(301, "/todo")
 })
 
-app.post('/Todo', (req, res) => {
+app.post('/todo', (req, res) => {
   const {name, description} = req.body
   tasks.push({
     id: idIndex++,
     name,
     description
   })
-  res.redirect(301, "/Todo")
+  res.redirect(301, "/todo")
 })
 
-app.get('/Todo', (req, res) => {
+app.get('/todo', (req, res) => {
   res.render('todo', { tasks })
 })
 
-app.post('/Todo/:id', (req, res) => {
+app.post('/todo/:id', (req, res) => {
   for (let i = 0; i < tasks.length; i++) {
     if (tasks[i].id == req.params.id) {
       if (req.body.checkbox == 'checked') {
@@ -43,7 +43,7 @@ app.post('/Todo/:id', (req, res) => {
       }
     }
   }
-  // res.redirect(301, "/Todo")
+  // res.redirect(301, "/todo")
   res.send("hi")
 })
 
