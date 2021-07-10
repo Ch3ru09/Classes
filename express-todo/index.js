@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 let idIndex = 0
-const users = []
+const tasks = []
 
 const app = express()
 const port = 3000
@@ -21,15 +21,30 @@ app.post('/redirect', (req, res) => {
 
 app.post('/Todo', (req, res) => {
   const {name, description} = req.body
-  todo.push({
+  tasks.push({
+    id: idIndex++,
     name,
     description
   })
+  res.redirect(301, "/Todo")
 })
 
 app.get('/Todo', (req, res) => {
-  // res.render('index', { currentTime: new Date() })
-  res.render('todo', { users })
+  res.render('todo', { tasks })
+})
+
+app.post('/Todo/:id', (req, res) => {
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].id == req.params.id) {
+      if (req.body.checkbox == 'checked') {
+        tasks[i].done = true
+      } else {
+        tasks[i].done = false
+      }
+    }
+  }
+  // res.redirect(301, "/Todo")
+  res.send("hi")
 })
 
 app.listen(port, () => {
