@@ -37,7 +37,7 @@
         <% tasks.forEach(task => { %>
           <tr>
             <td class="checkbox">
-              <form action="/todo/<% task.id %>" method="POST">
+              <form action="/todo/<%= task.id %>" method="POST">
                 <input type="checkbox" name="checkbox" value="checked" <%= task.done ? 'checked=checked' : '' %> onChange="this.form.submit()">
               </form>
             </td>
