@@ -43,7 +43,7 @@
             </td>
             <td><%= task.name %></td>
             <td><%= task.description %></td>
-            <td class="<%= task.done ? 'true' : false %> "><%= task.done ? 'finished' : 'unfinished' %></td>
+            <td><%= task.done %> </td>
           </tr>
         <% }) %>
       </tbody>
