@@ -1,14 +1,14 @@
 <html>
   <head>
-    <title> &ensp; Lobby of Todo</title>
+    <title> &ensp; Lobby of todo</title>
     <link rel="icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
     <%- include('todocss.ejs'); %>
   </head>
   <body>
     <ul>
-      <h1> Todo </h1>
+      <h1> todo </h1>
 
-      <form action="/Todo" method="POST" class="addForm">
+      <form action="/todo" method="POST" class="addForm">
 
         <div class="name">
           <input type="text" name="name" id="name" placeholder="&nbsp; task name" required>
@@ -37,7 +37,7 @@
         <% tasks.forEach(task => { %>
           <tr>
             <td class="checkbox">
-              <form action="/Todo/<% task.id %>" method="POST">
+              <form action="/todo/<% task.id %>" method="POST">
                 <input type="checkbox" name="checkbox" value="checked" <%= task.done ? 'checked=checked' : '' %> onChange="this.form.submit()">
               </form>
             </td>
