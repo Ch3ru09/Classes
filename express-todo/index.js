@@ -43,7 +43,8 @@ app.post('/todo/:id', (req, res) => {
       }
     }
   }
-  res.redirect(301, "/todo")
+  // res.redirect(301, "/todo")
+  res.send("hi")
 })
 
 app.listen(port, () => {

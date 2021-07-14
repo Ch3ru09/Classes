@@ -4,27 +4,37 @@
   <body>
     <h1>Users</h1>
 
-    <form action="" method="post" class="form-example">
+    <form action="/users" method="post" class="form-example">
       <div class="form-example">
         <label for="name">Enter your name: </label>
-        <input type="text" name="name" id="name" required>
+        <input type="text" name="firstName" id="firstName" required>
       </div>
       <div class="form-example">
-        <label for="email">Enter your password: </label>
-        <input type="password" name="password" id="password" required>
+        <label for="name">Enter your last name: </label>
+        <input type="text" name="lastName" id="lastName" required>
       </div>
       <div class="form-example">
         <input type="submit" value="Sign up">
       </div>
     </form> 
 
+    <form action="/search">
+      <div class="form-example">
+        <label for="search by first name">Search by first name: </label>
+        <input type="text" name="firstNameLike" id="firstNameLike">
+      </div>
+      <div class="form-example">
+        <input type="submit" value="Search">
+      </div>
+    </form>
+
     <table border="1">
       <thead>
         <tr>
           <th></th>
           <th>ID</th>
-          <th>User</th>
-          <th>Status</th>
+          <th>FirstName</th>
+          <th>LastName</th>
           <th>CreateAt</th>
         </tr>
       </thead>
@@ -38,9 +48,16 @@
               </form>
             </td>
             <td><%= user.id %></td>
-            <td><%= user.name %></td>
-            <td><%= user.done %></td>
-            <td><%= user.createdAt %></td>
+            <td><%= user.firstname %></td>
+            <td><%= user.lastname %></td>
+            <td><%= user.reg_date %></td>
+            <td>
+              <form action="/users/<%= user.id %>" method="POST">
+                <input type="text" name="firstName">
+                <input type="text" name="lastName">
+                <input type="submit" value="Submit">
+              </form>
+            </td>
           </tr>
         <% }) %>
       </tbody>
