@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const userModel = require('./user-model')
+
 let idIndex = 0
 const users = []
 
@@ -17,39 +19,36 @@ app.get('/', (req, res) => {
 
 app.get('/users', (req, res) => {
   // res.render('index', { currentTime: new Date() })
-  res.render('users', { users })
+  userModel.getAll()
+    .then(results => {
+      res.render('users', { users: results })
+    })
 })
 
 app.post('/users', (req, res) => {
   // console.log(req.body)
-  const {name, password} = req.body
-  users.push({
-    id: idIndex++,
-    name,
-    password,
-    createdAt: new Date(),
-  })
-  console.log(users)
-
-  // res.send('Got it!')
-  // res.render('users', { users })
-  res.redirect(301, '/users')
+  const {firstName, lastName} = req.body
+  userModel.add({firstName, lastName})
+    .then(() => {
+      res.redirect(301, '/users')
+    })
 })
 
 app.post('/users/:id', (req, res) => {
   console.log('id: ', req.params.id)
-  console.log('checkStatus: ', req.body.checkStatus)
-  for (let i = 0; i < users.length; i++) {
-    if (users[i].id == req.params.id) {
-      console.log('user found!')
-      if (req.body.checkStatus == 'checked') {
-        users[i].done = true
-      } else {
-        users[i].done = false
-      }
-    }
-  }
-  res.redirect('/users')
+  const {checkStatus, firstName, lastName} = req.body
+  userModel.update(req.params.id, {checkStatus, firstName, lastName})
+    .then(() => {
+      res.redirect('/users')
+    })
+})
+
+app.get('/search', (req, res) => {
+  const {firstNameLike} = req.query
+  userModel.search({firstNameLike})
+    .then(results => {
+      res.render('users', { users: results })
+    })
 })
 
 app.listen(port, () => {
