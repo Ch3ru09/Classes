@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
+const todoModel = require('./todo-model')
+
 let idIndex = 0
 const tasks = []
 
@@ -20,26 +22,28 @@ app.post('/redirect', (req, res) => {
 })
 
 app.post('/todo', (req, res) => {
-  const {name, description} = req.body
-  tasks.push({
-    id: idIndex++,
-    name,
-    description
-  })
-  res.redirect(301, "/todo")
+  const {taskName, taskDescription} = req.body
+  todoModel.add({taskName, taskDescription})
+    .then(() => {
+      res.redirect(301, "/todo")
+    })
 })
 
 app.get('/todo', (req, res) => {
-  res.render('todo', { tasks })
+  todoModel.getAll()
+    .then(results => {
+        res.render('todo', { tasks: results })
+    })
 })
 
 app.post('/todo/:id', (req, res) => {
   for (let i = 0; i < tasks.length; i++) {
-    if (tasks[i].id == req.params.id) {
+    const taskId = req.params.id;
+    if (tasks[i].id == taskId) {
       if (req.body.checkbox == 'checked') {
-        tasks[i].done = true
+        todoModel.update('finished', taskId)
       } else {
-        tasks[i].done = false
+        todoModel.update('unfinished', taskId) 
       }
     }
   }

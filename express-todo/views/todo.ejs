@@ -11,11 +11,11 @@
       <form action="/todo" method="POST" class="addForm">
 
         <div class="name">
-          <input type="text" name="name" id="name" placeholder="&nbsp; task name" required>
+          <input type="text" name="taskName" id="taskName" placeholder="&nbsp; task name" required>
         </div>
 
         <div class="description">
-          <input type="text" name="description" id="description" placeholder="&nbsp; description (optional)">
+          <input type="text" name="taskDescription" id="taskDescription" placeholder="&nbsp; description (optional)">
         </div>
 
         <button type="submit" id="addTask" class="addTask">
@@ -38,12 +38,12 @@
           <tr>
             <td class="checkbox">
               <form action="/todo/<%= task.id %>" method="POST">
-                <input type="checkbox" name="checkbox" value="checked" <%= task.done ? 'checked=checked' : '' %> onChange="this.form.submit()">
+                <input type="checkbox" name="checkbox" value="checked" <% if (task.status == "checked")  {%> <%= 'checked=checked' %> <%} else  {%> <%= '' %> <%} %> onChange="this.form.submit()">
               </form>
             </td>
-            <td><%= task.name %></td>
-            <td><%= task.description %></td>
-            <td class="<%= task.done ? 'true' : false %> "><%= task.done ? 'finished' : 'unfinished' %></td>
+            <td><%= task.taskName %></td>
+            <td><%= task.taskDescription %></td>
+            <td class="<%= task.status %>"><%= task.status %> </td>
           </tr>
         <% }) %>
       </tbody>
