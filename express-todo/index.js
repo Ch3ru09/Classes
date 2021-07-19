@@ -9,12 +9,30 @@ const tasks = []
 const app = express()
 const port = 3000
 
+app.use('/static', express.static('public'))
+
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.get('/', (req, res) => {
-  res.render('../lobby/lobby')
+  res.render('lobby')
+})
+
+app.get('/login', (req, res) => {
+  res.render('login')
+})
+
+app.post('/login', (req, res) => {
+
+})
+
+app.get('/signup', (req, res) => {
+  res.render('signup')
+})
+
+app.get('/signup', (req, res) => {
+  
 })
 
 app.post('/redirect', (req, res) => {
@@ -37,17 +55,20 @@ app.get('/todo', (req, res) => {
 })
 
 app.post('/todo/:id', (req, res) => {
-  for (let i = 0; i < tasks.length; i++) {
-    const taskId = req.params.id;
-    if (tasks[i].id == taskId) {
-      if (req.body.checkbox == 'checked') {
-        todoModel.update('finished', taskId)
-      } else {
-        todoModel.update('unfinished', taskId) 
-      }
+  const taskId = req.params.id;
+  console.log(" checkbox >> ", req.body.checkbox)
+  new Promise((resolve, reject) => {
+    console.log(" checkbox >> ", req.body.checkbox)
+    if (req.body.checkbox == 'checked') {
+      resolve(todoModel.update('finished', taskId))
+    } else {
+      resolve(todoModel.update('unfinished', taskId))
     }
-  }
-  res.redirect(301, "/todo")
+  })
+  .then(() => {
+    res.redirect(301, "/todo")
+  })
+
 })
 
 app.listen(port, () => {

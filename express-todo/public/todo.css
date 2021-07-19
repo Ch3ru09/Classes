@@ -1,0 +1,94 @@
+body {
+  background-image: url("https://i.ibb.co/x3rdVNf/PQHZ6h.jpg");
+  background-position: right bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  font-family: 'Quicksand';
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url(font/Quicksand/Quicksand-VariableFont_wght.ttf);
+}
+ul {
+  background-color: rgb(13, 23, 56);
+  display: inline-block;
+  padding: 20px 40px;
+  margin-left: 40px;
+  margin-top: 20px;
+}
+h1{
+  margin-left: 115px;
+  color: rgb(111, 202, 255);
+}
+.addform input {
+  width: 300px;
+  height: auto, 50px;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 140%;
+  border-radius: 10px;
+  border: none;
+  padding-left: 10px;
+}
+input:focus {
+  outline: none;
+}
+.addTask {
+  margin-top: 3%;
+  width: 200px;
+  height: fit-content;
+  border: 0px;
+  vertical-align: middle;
+  line-height: 5px;
+  border-radius: 40px;
+  margin-left: 50px;
+  position: relative;
+  transition: transform .5s ease-in-out, background-color .5s ease-in-out
+}
+.addTask:hover {
+  transition:transform .5s ease-in-out, background-color .5s ease-in-out;
+  /* transition: box-shadow 1s ease-in-out; */
+  transform: translateY(-1px);
+  border-radius: 40px;
+  background-color: rgb(185, 111, 255);
+}
+.plus {
+  margin-top: 10px;
+}
+
+h2 {
+  width: fit-content;
+  display: inline-block;
+  position: relative;
+  bottom: 15px;
+}
+
+.table {
+  margin-left: 30px;
+  background-color: rgb(133, 133, 133);
+  border-color: black;
+  border-spacing: 0px;
+}
+
+th {
+  padding: 5px 50px;
+  align-content: center;
+}
+td {
+  padding: 3px 5px;
+}
+.checkbox {
+  align-items: center;
+  text-align: center;
+  vertical-align: middle;
+}
+.finished {
+  color: #000;
+  background-color: #00ffaa;
+}
+.unfinished {
+  color: #000;
+  background-color: #ff0000;
+}
