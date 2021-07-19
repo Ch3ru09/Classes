@@ -1,9 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const todoModel = require('./todo-model')
 
-let idIndex = 0
+const todoModel = require('./todo-model')
+const signupModel = require('./signup-model')
+
 const tasks = []
 
 const app = express()
@@ -32,7 +33,7 @@ app.get('/signup', (req, res) => {
 })
 
 app.get('/signup', (req, res) => {
-  
+
 })
 
 app.post('/redirect', (req, res) => {
