@@ -2,8 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 
-const todoModel = require('./todo-model')
-const signupModel = require('./signup-model')
+const todoModel = require('./model/todo')
+const signupModel = require('./model/signup')
 
 const tasks = []
 
