@@ -32,13 +32,18 @@ app.get('/signup', (req, res) => {
   res.render('signup')
 })
 
-app.get('/signup', (req, res) => {
-
+app.post('/signup', (req, res) => {
+  const {username, email, password} = req.body
+  signupModel.add({username, email, password}) 
+    .then(user => {
+      res.redirect(301, "/todo")
+      // add which user here
+    })
 })
 
-app.post('/redirect', (req, res) => {
-  res.redirect(301, "/todo")
-})
+// app.post('/redirect', (req, res) => {
+//   res.redirect(301, "/todo")
+// })
 
 app.post('/todo', (req, res) => {
   const {taskName, taskDescription} = req.body
@@ -49,7 +54,7 @@ app.post('/todo', (req, res) => {
 })
 
 app.get('/todo', (req, res) => {
-  todoModel.getAll()
+  todoModel.getAll(username)
     .then(results => {
         res.render('todo', { tasks: results })
     })
