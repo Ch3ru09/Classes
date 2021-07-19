@@ -11,6 +11,7 @@ body {
   font-family: 'Quicksand';
   src: url(font/Quicksand/Quicksand-VariableFont_wght.ttf);
 }
+
 ul {
   background-color: rgb(13, 23, 56);
   display: inline-block;
@@ -18,10 +19,12 @@ ul {
   margin-left: 40px;
   margin-top: 20px;
 }
+
 h1{
   margin-left: 115px;
   color: rgb(111, 202, 255);
 }
+
 .addform input {
   width: 300px;
   height: auto, 50px;
@@ -32,9 +35,11 @@ h1{
   border: none;
   padding-left: 10px;
 }
+
 input:focus {
   outline: none;
 }
+
 .addTask {
   margin-top: 3%;
   width: 200px;
@@ -47,6 +52,7 @@ input:focus {
   position: relative;
   transition: transform .5s ease-in-out, background-color .5s ease-in-out
 }
+
 .addTask:hover {
   transition:transform .5s ease-in-out, background-color .5s ease-in-out;
   /* transition: box-shadow 1s ease-in-out; */
@@ -54,6 +60,7 @@ input:focus {
   border-radius: 40px;
   background-color: rgb(185, 111, 255);
 }
+
 .plus {
   margin-top: 10px;
 }
