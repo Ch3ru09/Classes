@@ -2,7 +2,7 @@
   <head>
     <title> &ensp; Lobby of todo</title>
     <link rel="icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
-    <%- include('todocss.ejs'); %>
+    <link rel="stylesheet" href="static/todo.css"
   </head>
   <body>
     <ul>
@@ -38,12 +38,18 @@
           <tr>
             <td class="checkbox">
               <form action="/todo/<%= task.id %>" method="POST">
-                <input type="checkbox" name="checkbox" value="checked" <% if (task.status == "checked")  {%> <%= 'checked=checked' %> <%} else  {%> <%= '' %> <%} %> onChange="this.form.submit()">
+                <input type="checkbox" name="checkbox" value="checked" 
+                  <% if (task.status == "finished") {%> 
+                    <%= 'checked=checked' %> 
+                  <%} else  {%> 
+                    <%= '' %> 
+                  <%} %> 
+                  onChange="this.form.submit()">
               </form>
             </td>
             <td><%= task.taskName %></td>
             <td><%= task.taskDescription %></td>
-            <td class="<%= task.status %>"><%= task.status %> </td>
+            <td class="<%= task.status %>"> <%= task.status %> </td>
           </tr>
         <% }) %>
       </tbody>
