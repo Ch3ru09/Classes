@@ -20,8 +20,8 @@ body {
   text-align: center;
 }
 
-form {
-  color:white;
+h1 {
+  color: white;
 }
 
 input {
@@ -47,12 +47,13 @@ input {
 
 .box input[type = "text"]:hover,.box input[type = "password"]:hover {
   width: 210px;
-  transition: .5s ease;
+  transition: width .25s ease, border 1s ease-in-out;
+  border:2px solid #30ffba;
 }
 
 .box input[type = "text"]:focus,.box input[type = "password"]:focus {
   border:2px solid #ff00aa;
-  transition: border 10s ease-in-out;
+  transition: border 1s ease-in-out;
 }
 
 .box input[type = "submit"] {
