@@ -13,8 +13,8 @@ mysql.createConnection({
     conn = connection
   })
 
-exports.getAll = function () {
-  return conn.query('select * from tasks')
+exports.getAll = function (username) {
+  return conn.query('select * from tasks where username = ?', [username])
     .then(([results]) => {
         return results
       }
