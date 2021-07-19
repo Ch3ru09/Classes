@@ -5,14 +5,43 @@ const db = require('./db')
 
 exports.add = function({username, password, email}) {
   // salts here
-  const saltedPassword = password + createSalt()
+  const salt = createSalt()
+  const saltedPassword = password + salt
 
   // encryption
   const hashedPassword = sha1(saltedPassword)
 
   // adds it in the database
-  return db.getConn().query("insert into users (username, password, email, salt) values (?, ?, ?, ?)"
-    , [username, hashedPassword, email, salt])
+  //return db.getConn().query("insert into users (username, password, email, salt) values (?, ?, ?, ?)"
+  //  , [username, hashedPassword, email, salt])
+  return db.getConn().query('insert into users set ?', {
+    username,
+    password: hashedPassword,
+    email,
+    salt,
+  })
+    .then(results => {
+      const id = results[0].insertId
+      return fetch(id)
+    })
+}
+
+exports.login = function({username, password}) {
+
+  return user
+}
+
+function fetch(id) {
+  return db.getConn().query('select id, username, email, reg_time from users where id = ?', [id])
+    .then(results => {
+      const {id, username, email, reg_time} = results[0][0]
+      return {
+        id,
+        username,
+        email,
+        regTime: reg_time
+      }
+    })
 }
 
 function createSalt() {
