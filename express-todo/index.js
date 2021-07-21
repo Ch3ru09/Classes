@@ -2,13 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 
-<<<<<<< Updated upstream
-const todoModel = require('./todo-model')
-const signupModel = require('./signup-model')
-=======
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
->>>>>>> Stashed changes
 
 const tasks = []
 
@@ -30,9 +25,6 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-<<<<<<< Updated upstream
-
-=======
   // req.session.userId = user.id
   const {username, password} = req.body
   accountModel.login({username, password}, function callback(result) {
@@ -49,7 +41,6 @@ app.get('/logout', (req, res) => {
   // req.session.userId = undefined
   delete req.session.userId
   res.redirect(301, '/')
->>>>>>> Stashed changes
 })
 
 app.get('/signup', (req, res) => {
@@ -86,7 +77,6 @@ app.post('/todo', (req, res) => {
     })
 })
 
-<<<<<<< Updated upstream
 app.get('/todo', (req, res) => {
   todoModel.getAll(username)
     .then(results => {
@@ -94,8 +84,6 @@ app.get('/todo', (req, res) => {
     })
 })
 
-=======
->>>>>>> Stashed changes
 app.post('/todo/:id', (req, res) => {
   const taskId = req.params.id;
   console.log(" checkbox >> ", req.body.checkbox)
