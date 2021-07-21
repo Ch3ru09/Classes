@@ -4,7 +4,7 @@ CREATE TABLE `tasks` (
   `taskName` varchar(255) NOT NULL,
   `taskDescription` varchar(255) DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'unfinished',
-  `username` varchar(100) NOT NULL,
+  `userId` int unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

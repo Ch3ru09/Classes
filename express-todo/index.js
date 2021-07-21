@@ -2,9 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 
-
 const todoModel = require('./model/todo')
-const signupModel = require('./model/signup')
+const accountModel = require('./model/accounts')
 
 const tasks = []
 
@@ -36,6 +35,23 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
 
   // req.session.userId = user.id
+  const {username, password} = req.body
+  accountModel.login({username, password}, function callback(result) {
+    console.log(">", result);
+    if (result == true) {
+      res.redirect(301, '/todo')
+    } else {
+      res
+    }
+  })
+})
+
+app.get('/logout', (req, res) => {
+  // req.session.userId = undefined
+  delete req.session.userId
+  res.redirect(301, '/')
+
+  // req.session.userId = user.id
 })
 
 app.get('/logout', (req, res) => {
@@ -50,7 +66,7 @@ app.get('/signup', (req, res) => {
 
 app.post('/signup', (req, res) => {
   const {username, email, password} = req.body
-  signupModel.add({username, email, password}) 
+  accountModel.signup({username, email, password}) 
     .then(user => {
       req.session.userId = user.id
       res.redirect(301, "/todo")
@@ -62,9 +78,18 @@ app.post('/signup', (req, res) => {
 //   res.redirect(301, "/todo")
 // })
 
+app.get('/todo', (req, res) => {
+  const userId = req.session.userId
+  todoModel.getAll(userId)
+    .then(results => {
+      res.render('todo', { tasks: results, userId })
+    })
+})
+
 app.post('/todo', (req, res) => {
   const {taskName, taskDescription} = req.body
-  todoModel.add({taskName, taskDescription})
+  const userId = req.session.userId
+  todoModel.add({taskName, taskDescription, userId})
     .then(() => {
       res.redirect(301, "/todo")
     })

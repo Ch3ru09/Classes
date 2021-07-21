@@ -1,6 +1,6 @@
 exports.db = {
-  host: 'localhost',
-  user: 'root',
-  password: '12345678',
+  host: 'host',
+  user: 'user',
+  password: 'password',
   database: 'my_todos',
 }
