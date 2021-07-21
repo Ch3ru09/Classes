@@ -2,6 +2,7 @@ const { log } = require('debug')
 
 const db = require('./db')
 
+
 exports.getAll = function(userId) {
   return db.getConn().query('select * from tasks where userId = ?', [userId])
     .then(([results]) => {

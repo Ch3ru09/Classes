@@ -1,14 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieSession = require('cookie-session')
 
-
-<<<<<<< Updated upstream
-const todoModel = require('./todo-model')
-const signupModel = require('./signup-model')
-=======
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
->>>>>>> Stashed changes
 
 const tasks = []
 
@@ -17,11 +12,19 @@ const port = 3000
 
 app.use('/static', express.static('public'))
 
+app.set('trust proxy', 1)
+
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
 app.get('/', (req, res) => {
+  console.log('>>>>', req.session.userId)
   res.render('lobby')
 })
 
@@ -30,9 +33,7 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
-<<<<<<< Updated upstream
 
-=======
   // req.session.userId = user.id
   const {username, password} = req.body
   accountModel.login({username, password}, function callback(result) {
@@ -49,7 +50,14 @@ app.get('/logout', (req, res) => {
   // req.session.userId = undefined
   delete req.session.userId
   res.redirect(301, '/')
->>>>>>> Stashed changes
+
+  // req.session.userId = user.id
+})
+
+app.get('/logout', (req, res) => {
+  // req.session.userId = undefined
+  delete req.session.userId
+  res.send('logout!')
 })
 
 app.get('/signup', (req, res) => {
@@ -60,6 +68,7 @@ app.post('/signup', (req, res) => {
   const {username, email, password} = req.body
   accountModel.signup({username, email, password}) 
     .then(user => {
+      req.session.userId = user.id
       res.redirect(301, "/todo")
       // add which user here
     })
@@ -86,16 +95,14 @@ app.post('/todo', (req, res) => {
     })
 })
 
-<<<<<<< Updated upstream
 app.get('/todo', (req, res) => {
+  console.log('>>>>', req.session.userId)
   todoModel.getAll(username)
     .then(results => {
         res.render('todo', { tasks: results })
     })
 })
 
-=======
->>>>>>> Stashed changes
 app.post('/todo/:id', (req, res) => {
   const taskId = req.params.id;
   console.log(" checkbox >> ", req.body.checkbox)
