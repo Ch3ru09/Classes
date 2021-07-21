@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const cookieSession = require('cookie-session')
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
@@ -12,11 +12,19 @@ const port = 3000
 
 app.use('/static', express.static('public'))
 
+app.set('trust proxy', 1)
+
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
+
 app.get('/', (req, res) => {
+  console.log('>>>>', req.session.userId)
   res.render('lobby')
 })
 
@@ -25,6 +33,7 @@ app.get('/login', (req, res) => {
 })
 
 app.post('/login', (req, res) => {
+
   // req.session.userId = user.id
   const {username, password} = req.body
   accountModel.login({username, password}, function callback(result) {
@@ -41,6 +50,14 @@ app.get('/logout', (req, res) => {
   // req.session.userId = undefined
   delete req.session.userId
   res.redirect(301, '/')
+
+  // req.session.userId = user.id
+})
+
+app.get('/logout', (req, res) => {
+  // req.session.userId = undefined
+  delete req.session.userId
+  res.send('logout!')
 })
 
 app.get('/signup', (req, res) => {
@@ -51,6 +68,7 @@ app.post('/signup', (req, res) => {
   const {username, email, password} = req.body
   accountModel.signup({username, email, password}) 
     .then(user => {
+      req.session.userId = user.id
       res.redirect(301, "/todo")
       // add which user here
     })
@@ -78,6 +96,7 @@ app.post('/todo', (req, res) => {
 })
 
 app.get('/todo', (req, res) => {
+  console.log('>>>>', req.session.userId)
   todoModel.getAll(username)
     .then(results => {
         res.render('todo', { tasks: results })
