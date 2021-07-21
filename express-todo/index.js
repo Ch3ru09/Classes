@@ -54,12 +54,6 @@ app.get('/logout', (req, res) => {
   // req.session.userId = user.id
 })
 
-app.get('/logout', (req, res) => {
-  // req.session.userId = undefined
-  delete req.session.userId
-  res.send('logout!')
-})
-
 app.get('/signup', (req, res) => {
   res.render('signup')
 })
@@ -92,14 +86,6 @@ app.post('/todo', (req, res) => {
   todoModel.add({taskName, taskDescription, userId})
     .then(() => {
       res.redirect(301, "/todo")
-    })
-})
-
-app.get('/todo', (req, res) => {
-  console.log('>>>>', req.session.userId)
-  todoModel.getAll(username)
-    .then(results => {
-        res.render('todo', { tasks: results })
     })
 })
 

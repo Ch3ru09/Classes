@@ -6,9 +6,8 @@ const db = require('./db')
 exports.getAll = function(userId) {
   return db.getConn().query('select * from tasks where userId = ?', [userId])
     .then(([results]) => {
-        return results
-      }
-    )
+      return results
+    })
 }
 
 exports.add = function({taskName, taskDescription, userId}) {
