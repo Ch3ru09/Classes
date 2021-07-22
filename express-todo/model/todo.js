@@ -6,9 +6,18 @@ const db = require('./db')
 exports.getAll = function(userId) {
   return db.getConn().query('select * from tasks where userId = ?', [userId])
     .then(([results]) => {
-        return results
+      return results
+    })
+}
+
+exports.getUser = (userId) => {
+  return db.getConn().query('select username, email from users where id = ?', [userId])
+    .then(results => {
+      return {
+        username: results.username,
+        email: results.email
       }
-    )
+    })
 }
 
 exports.add = function({taskName, taskDescription, userId}) {

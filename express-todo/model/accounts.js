@@ -30,23 +30,22 @@ exports.signup = function({username, password, email}) {
 exports.login = ({username, password}, callback) => {
   // takes username, gets the salt and hashed password, hashes login password + salt and compare
   const isUser = getStored(username, (results) => {
-    const {storedPassword, storedSalt} = results;
+    const {userId, storedPassword, storedSalt} = results;
     const inputPassword = sha1(password + storedSalt)
     if (inputPassword == storedPassword) {
-      console.log(">>", true);
-      callback(true)
+      callback(true, userId)
     } else {
-      console.log(">>", false);
       callback(false)
     }
   })
 }
 
 function getStored(username, cb) {
-  return db.getConn().query('select password, salt from users where username = ?', [username])
+  return db.getConn().query('select id, password, salt from users where username = ?', [username])
     .then(results => {
-      const {password, salt} = results[0][0]
+      const {id, password, salt} = results[0][0]
       cb({
+        userId: id,
         storedPassword: password,
         storedSalt: salt
       })

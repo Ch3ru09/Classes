@@ -1,10 +1,15 @@
 <html>
   <head>
-    <title> &ensp; Lobby of todo</title>
+    <title> &ensp; Todo </title>
     <link rel="icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
-    <link rel="stylesheet" href="static/todo.css"
+    <link rel="stylesheet" href="static/todo.css">
   </head>
   <body>
+    <header>
+      <div>
+        <%= userInfo.username %> 
+      </div>
+    </header>
     <ul>
       <h1> todo </h1>
 
@@ -19,7 +24,7 @@
         </div>
 
         <button type="submit" id="addTask" class="addTask">
-          <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="40" height="40" class="plus">
+          <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="20" height="20" class="plus">
           &emsp;
           <h2>Add task</h2>
         </button>
