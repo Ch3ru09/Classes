@@ -8,6 +8,15 @@ const { cache } = require('ejs')
 
 const tasks = []
 
+var redirectIfNoLogin = function (req, res, next) {
+  const userId = req.session.userId
+  if (!userId) {
+    return res.redirect(301, '/login')
+  }
+  req.userId = 'aaaaa'
+  next()
+}
+
 const app = express()
 const port = 3000
 
@@ -35,16 +44,29 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
   const {username, password} = req.body
-  accountModel.login({username, password}, function callback(result, userId) {
-    if (result == true) {
-      res.redirect(301, '/todo')
-      console.log(userId);
-    } else {
-      const err = true
-      res.render('login', {err})
-      console.log(userId);
-    }
-  })
+  // accountModel.login({username, password}, function callback(result, userId) {
+  //   if (result == true) {
+  //     req.session.userId = userId
+  //     res.redirect(301, '/todo')
+  //     console.log(userId);
+  //   } else {
+  //     const err = true
+  //     res.render('login', {err})
+  //     console.log(userId);
+  //   }
+  // })
+  accountModel.loginPromise({username, password})
+    .then(userId => {
+      if (userId) {
+        req.session.userId = userId
+        res.redirect(301, '/todo')
+        console.log(userId);
+      } else {
+        const err = true
+        res.render('login', {err})
+        console.log(userId);
+      }
+    })
 })
 
 app.get('/logout', (req, res) => {
@@ -72,11 +94,15 @@ app.post('/signup', (req, res) => {
 //   res.redirect(301, "/todo")
 // })
 
+app.use('/todo', redirectIfNoLogin)
+
 app.get('/todo', (req, res) => {
   const userId = req.session.userId
+  console.log('login userId:', userId)
   const userInfo = todoModel.getUser(userId)
     .then(info => {
       return {
+        // TODO userId: info.userId
         username: info.username,
         email: info.email,
       }
@@ -88,8 +114,8 @@ app.get('/todo', (req, res) => {
 })
 
 app.post('/todo', (req, res) => {
-  const {taskName, taskDescription} = req.body
   const userId = req.session.userId
+  const {taskName, taskDescription} = req.body
   todoModel.add({taskName, taskDescription, userId})
     .then(() => {
       res.redirect(301, "/todo")
@@ -97,12 +123,13 @@ app.post('/todo', (req, res) => {
 })
 
 app.post('/todo/:id', (req, res) => {
+  const userId = req.session.userId
   const taskId = req.params.id;
   new Promise((resolve, reject) => {
     if (req.body.checkbox == 'checked') {
-      resolve(todoModel.update('finished', taskId))
+      resolve(todoModel.update('finished', taskId, userId))
     } else {
-      resolve(todoModel.update('unfinished', taskId))
+      resolve(todoModel.update('unfinished', taskId, userId))
     }
   })
   .then(() => {

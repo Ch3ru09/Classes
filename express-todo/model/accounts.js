@@ -52,6 +52,28 @@ function getStored(username, cb) {
     })
 }
 
+exports.loginPromise = ({username, password}) => {
+  return getStoredPromise(username)
+    .then(({userId, storedPassword, storedSalt}) => {
+      const inputPassword = sha1(password + storedSalt)
+      if (inputPassword == storedPassword) {
+        return userId
+      }
+      return 
+    })
+}
+
+function getStoredPromise(username) {
+  return db.getConn().query('select id, password, salt from users where username = ?', [username])
+    .then(([rows])=> {
+      return {
+        userId: rows[0].id,
+        storedPassword: rows[0].password,
+        storedSalt: rows[0].salt,
+      }
+    })
+}
+
 function fetch(id) {
   return db.getConn().query('select id, username, email, reg_time from users where id = ?', [id])
     .then(results => {
