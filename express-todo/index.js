@@ -4,6 +4,7 @@ const cookieSession = require('cookie-session')
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
+const { cache } = require('ejs')
 
 const tasks = []
 
@@ -24,24 +25,24 @@ app.use(cookieSession({
 }))
 
 app.get('/', (req, res) => {
-  console.log('>>>>', req.session.userId)
   res.render('lobby')
 })
 
 app.get('/login', (req, res) => {
-  res.render('login')
+  const err = false
+  res.render('login', {err})
 })
 
 app.post('/login', (req, res) => {
-
-  // req.session.userId = user.id
   const {username, password} = req.body
-  accountModel.login({username, password}, function callback(result) {
-    console.log(">", result);
+  accountModel.login({username, password}, function callback(result, userId) {
     if (result == true) {
       res.redirect(301, '/todo')
+      console.log(userId);
     } else {
-      res
+      const err = true
+      res.render('login', {err})
+      console.log(userId);
     }
   })
 })
@@ -64,7 +65,6 @@ app.post('/signup', (req, res) => {
     .then(user => {
       req.session.userId = user.id
       res.redirect(301, "/todo")
-      // add which user here
     })
 })
 
@@ -74,10 +74,17 @@ app.post('/signup', (req, res) => {
 
 app.get('/todo', (req, res) => {
   const userId = req.session.userId
-  todoModel.getAll(userId)
-    .then(results => {
-      res.render('todo', { tasks: results, userId })
+  const userInfo = todoModel.getUser(userId)
+    .then(info => {
+      return {
+        username: info.username,
+        email: info.email,
+      }
     })
+    todoModel.getAll(userId)
+      .then(results => {
+        res.render('todo', { tasks: results, userId, userInfo })
+      })
 })
 
 app.post('/todo', (req, res) => {
@@ -91,9 +98,7 @@ app.post('/todo', (req, res) => {
 
 app.post('/todo/:id', (req, res) => {
   const taskId = req.params.id;
-  console.log(" checkbox >> ", req.body.checkbox)
   new Promise((resolve, reject) => {
-    console.log(" checkbox >> ", req.body.checkbox)
     if (req.body.checkbox == 'checked') {
       resolve(todoModel.update('finished', taskId))
     } else {

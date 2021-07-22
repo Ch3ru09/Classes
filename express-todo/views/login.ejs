@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title> Sign in </title>
+    <title> Log in </title>
     <link rel = "icon" href="https://i.ibb.co/TTfdZpc/plus.png" type="image/png">
     <link rel="stylesheet" href="static/login.css">
   </head>
@@ -10,6 +10,11 @@
       <input type="text" name="username" placeholder="&nbsp; username" required>
       <input type="password" name="password" placeholder="&nbsp; password" required>
       <input type="submit" name="login" value="Login">
+      <div>
+        <p id="Error" class=<%= err ? "visible" : "invisible" %> >
+          This is the wrong username or password
+        </p>
+      </div>
       <p>
         Don't have an account? &nbsp;
         <a href="/signup">

@@ -10,6 +10,16 @@ exports.getAll = function(userId) {
     })
 }
 
+exports.getUser = (userId) => {
+  return db.getConn().query('select username, email from users where id = ?', [userId])
+    .then(results => {
+      return {
+        username: results.username,
+        email: results.email
+      }
+    })
+}
+
 exports.add = function({taskName, taskDescription, userId}) {
   return db.getConn().query('insert into tasks set ?', {
     taskName,
