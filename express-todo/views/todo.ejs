@@ -6,30 +6,41 @@
   </head>
   <body>
     <header>
-      <div>
+      <ul class="username">
         <%= userInfo.username %> 
-      </div>
+      </ul>
+      
+      <ul class="logo">
+
+      </ul>
+
+      <button onClick="showDropdown()" class="dropbutton">
+        <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="30" height="30" class="plus"> &emsp;
+        <h2>Add Task</h2>
+      </button>
     </header>
-    <ul>
-      <h1> todo </h1>
+    
+    <ul class="dropdown" id="dropdown">
+      
+      <li class="form" id=form>
+        <h1> todo </h1>
 
-      <form action="/todo" method="POST" class="addForm">
+        <form action="/todo" method="POST" class="addForm">
 
-        <div class="name">
-          <input type="text" name="taskName" id="taskName" placeholder="&nbsp; task name" required>
-        </div>
+          <div class="name">
+            <input type="text" name="taskName" id="taskName" placeholder="&nbsp; task name" required>
+          </div>
 
-        <div class="description">
-          <input type="text" name="taskDescription" id="taskDescription" placeholder="&nbsp; description (optional)">
-        </div>
+          <div class="description">
+            <input type="text" name="taskDescription" id="taskDescription" placeholder="&nbsp; description (optional)">
+          </div>
 
-        <button type="submit" id="addTask" class="addTask">
-          <img src="https://i.ibb.co/TTfdZpc/plus.png" border="0" width="20" height="20" class="plus">
-          &emsp;
-          <h2>Add task</h2>
-        </button>
-        
-      </form>
+          <button type="submit" id="addTask" class="addTask">
+            <h2>&emsp; Add &emsp;</h2>
+          </button>
+        </form>
+      </li>
+      
     </ul>
     <table border='1' class='table'>
       <thead>
@@ -59,5 +70,12 @@
         <% }) %>
       </tbody>
     </table>
+
+    <script>
+      function showDropdown() {
+        const x = document.getElementById('dropdown')
+        x.classList.toggle("show");
+      }
+    </script>
   </body>
 </html>

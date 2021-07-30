@@ -63,6 +63,18 @@ exports.loginPromise = ({username, password}) => {
     })
 }
 
+// TODO move to account.js * ok *
+exports.getUser = (userId) => {
+  return db.getConn().query('select username, email from users where id = ?', [userId])
+    .then(([results]) => { // TODO results = [rows, fields]; userInfo = rows[0]
+      // console.log('>>', results)
+      return {
+        username: results[0].username,
+        email: results[0].email
+      }
+    })
+}
+
 function getStoredPromise(username) {
   return db.getConn().query('select id, password, salt from users where username = ?', [username])
     .then(([rows])=> {

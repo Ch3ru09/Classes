@@ -10,10 +10,9 @@ const tasks = []
 
 var redirectIfNoLogin = function (req, res, next) {
   const userId = req.session.userId
-  if (!userId) {
+  if (userId == 'undefined') {
     return res.redirect(301, '/login')
   }
-  req.userId = 'aaaaa'
   next()
 }
 
@@ -57,14 +56,12 @@ app.post('/login', (req, res) => {
   // })
   accountModel.loginPromise({username, password})
     .then(userId => {
-      if (userId) {
+      if (typeof userId != "undefined") {
         req.session.userId = userId
         res.redirect(301, '/todo')
-        console.log(userId);
       } else {
         const err = true
         res.render('login', {err})
-        console.log(userId);
       }
     })
 })
@@ -98,19 +95,20 @@ app.use('/todo', redirectIfNoLogin)
 
 app.get('/todo', (req, res) => {
   const userId = req.session.userId
-  console.log('login userId:', userId)
-  const userInfo = todoModel.getUser(userId)
-    .then(info => {
+  accountModel.getUser(userId)
+    .then((info) => {
       return {
-        // TODO userId: info.userId
-        username: info.username,
-        email: info.email,
+        username: info.username, 
+        email: info.email
       }
     })
-    todoModel.getAll(userId)
-      .then(results => {
-        res.render('todo', { tasks: results, userId, userInfo })
-      })
+    .then(userInfo => {
+      todoModel.getAll(userId)
+        .then(results => {
+          res.render('todo', { tasks: results, userId, userInfo })
+        })
+    })
+  
 })
 
 app.post('/todo', (req, res) => {
