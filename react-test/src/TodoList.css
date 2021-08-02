@@ -1,0 +1,8 @@
+body {
+  background-image: url("%PUBLIC_URL%/2000944_original.jpg");
+}
+
+.table {
+  display: inline-block;
+  width: 50%;
+}

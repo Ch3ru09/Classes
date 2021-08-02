@@ -1,24 +1,31 @@
 import React from 'react'
+// import './TodoList.css'
 
 export default function TodoList() {
   return (
     <div>
-      
+      <TodoForm />
     </div>
   )
 }
 
-class todoForm extends React.Component {
+class TodoForm extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {value: ""}
+    this.state = {nameValue: "", descValue: ""}
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
  
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleInputChange(event) {
+    const target = event.target;
+    const value = event.name === "todoName" ? target.value : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    })
   }
 
   handleSubmit(event) {
@@ -30,11 +37,23 @@ class todoForm extends React.Component {
   }
 
   render() {
-    <form>
-      <h1> Todos </h1>
-      <textarea value="{this.state.value}" onChange={this.handleChange} />
-      <textarea value="{this.state.value}" onChange={this.handleChange} />
-      <input type="submit" value="Submit" />
-    </form>
+    return (
+      <form>
+        <h1> Todos </h1>
+        <input 
+          name="todoName"
+          type="textarea"
+          value={this.state.nameValue} 
+          onChange={this.handleInputChange} 
+        />
+        <input 
+          name="todoDesc"
+          type="textarea"
+          value={this.state.discValue} 
+          onChange={this.handleChange} 
+        />
+        <input type="submit" value="Submit" />
+      </form>
+    )
   }
 }
