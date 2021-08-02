@@ -1,5 +1,3 @@
-const { log } = require('debug')
-
 const db = require('./db')
 
 
@@ -16,8 +14,15 @@ exports.add = function({taskName, taskDescription, userId}) {
     taskDescription,
     userId
   })
+    .then(result => {
+      const id = result[0].insertId
+      return db.getConn().query('select * from tasks where id = ?', [id])
+    })
+    .then(([results]) => {
+      return results[0]
+    })
 }
 
 exports.update = function(checkstatus, id) {
-  return db.getConn().query("update tasks set status = ? where id = ?", [checkstatus, id])
+  return db.getConn().query('update tasks set status = ? where id = ?', [checkstatus, id])
 }

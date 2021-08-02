@@ -1,12 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
+const cors = require('cors')
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
-const { cache } = require('ejs')
-
-const tasks = []
 
 var redirectIfNoLogin = function (req, res, next) {
   const userId = req.session.userId
@@ -23,9 +21,11 @@ app.use('/static', express.static('public'))
 
 app.set('trust proxy', 1)
 
+app.use(cors())
 app.set('view engine', 'ejs')
 app.set('views', './views')
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use(cookieSession({
   name: 'session',
@@ -56,7 +56,7 @@ app.post('/login', (req, res) => {
   // })
   accountModel.loginPromise({username, password})
     .then(userId => {
-      if (typeof userId != "undefined") {
+      if (typeof userId != 'undefined') {
         req.session.userId = userId
         res.redirect(301, '/todo')
       } else {
@@ -83,7 +83,7 @@ app.post('/signup', (req, res) => {
   accountModel.signup({username, email, password}) 
     .then(user => {
       req.session.userId = user.id
-      res.redirect(301, "/todo")
+      res.redirect(301, '/todo')
     })
 })
 
@@ -116,23 +116,35 @@ app.post('/todo', (req, res) => {
   const {taskName, taskDescription} = req.body
   todoModel.add({taskName, taskDescription, userId})
     .then(() => {
-      res.redirect(301, "/todo")
+      res.redirect(301, '/todo')
     })
+})
+
+app.post('/api/todos', (req, res) => {
+  const {taskName, taskDescription, userId} = req.body
+  todoModel.add({taskName, taskDescription, userId})
+    .then(todo => {
+      res.json(todo)
+    })
+})
+
+app.get('/api/todos', (req, res) => {
+
 })
 
 app.post('/todo/:id', (req, res) => {
   const userId = req.session.userId
-  const taskId = req.params.id;
-  new Promise((resolve, reject) => {
+  const taskId = req.params.id
+  new Promise((resolve, _reject) => {
     if (req.body.checkbox == 'checked') {
       resolve(todoModel.update('finished', taskId, userId))
     } else {
       resolve(todoModel.update('unfinished', taskId, userId))
     }
   })
-  .then(() => {
-    res.redirect(301, "/todo")
-  })
+    .then(() => {
+      res.redirect(301, '/todo')
+    })
 
 })
 
