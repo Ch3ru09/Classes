@@ -1,3 +1,4 @@
+const { default: TodoList } = require('../../react-test/src/TodoList')
 const db = require('./db')
 
 
@@ -20,6 +21,13 @@ exports.add = function({taskName, taskDescription, userId}) {
     })
     .then(([results]) => {
       return results[0]
+    })
+}
+
+exports.fetchTodos = function(userId) {
+  return db.getConn().query('select * from tasks where userId = ?', [userId])
+    .then(todos => {
+      return todos
     })
 }
 

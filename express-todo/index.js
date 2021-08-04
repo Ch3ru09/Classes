@@ -128,8 +128,12 @@ app.post('/api/todos', (req, res) => {
     })
 })
 
-app.get('/api/todos', (req, res) => {
-
+app.get('/api/todos', (_req, res) => {
+  todoModel.fetchTodos(1)
+    .then(todos => {
+      console.log('>>', todos)
+      res.json(todos)
+    })
 })
 
 app.post('/todo/:id', (req, res) => {
