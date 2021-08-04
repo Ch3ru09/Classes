@@ -107,7 +107,7 @@ class TodoForm extends React.Component {
           {this.getTodos()
             .then(todos => {
               todos.forEach(todo => {
-                document.getElementById.innerHtml())
+                document.getElementById.innerHtml();
               });
             })}
         </div>
