@@ -1,4 +1,3 @@
-const { default: TodoList } = require('../../react-test/src/TodoList')
 const db = require('./db')
 
 
@@ -26,11 +25,19 @@ exports.add = function({taskName, taskDescription, userId}) {
 
 exports.fetchTodos = function(userId) {
   return db.getConn().query('select * from tasks where userId = ?', [userId])
-    .then(todos => {
+    .then(([todos]) => {
       return todos
     })
 }
 
-exports.update = function(checkstatus, id) {
-  return db.getConn().query('update tasks set status = ? where id = ?', [checkstatus, id])
+exports.update = function(checkstatus, id, userId) {
+  return db.getConn().query('update tasks set status = ? where id = ? and userId = ?', [checkstatus, id, userId])
+    .then(([result]) => {
+      if (result.affectedRows > 0) {
+        return db.getConn().query('select * from tasks where id = ?', [id])
+          .then(([rows]) => {
+            return rows[0]
+          })
+      }
+    })
 }

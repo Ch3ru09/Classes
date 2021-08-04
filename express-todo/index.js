@@ -136,6 +136,17 @@ app.get('/api/todos', (_req, res) => {
     })
 })
 
+app.put('/api/todos/:id', (req, res) => {
+  const {status, userId} = req.body
+  todoModel.update(status, req.params.id, userId)
+    .then(todo => {
+      if (todo) {
+        return res.json(todo)
+      }
+      return res.status(404).end()
+    })
+})
+
 app.post('/todo/:id', (req, res) => {
   const userId = req.session.userId
   const taskId = req.params.id
