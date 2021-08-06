@@ -1,10 +1,12 @@
 body {
-  background-image: url("https://i.ibb.co/x3rdVNf/PQHZ6h.jpg");
+  background-image: url("../static/pictures/PQHZ6h.jpeg");
   background-position: right bottom;
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
   font-family: 'Quicksand';
+  margin: 0;
+  padding: 0;
 }
 
 @font-face {
@@ -12,12 +14,64 @@ body {
   src: url(font/Quicksand/Quicksand-VariableFont_wght.ttf);
 }
 
-ul {
+header {
+  background-color: black;
+  height: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+.username {
+  float: right;
+  margin-right: 5vw;
+}
+
+.dropdown {
+  margin:0 ;
+  padding: 0;
+  display: none;
+}
+
+.dropbutton {
+  margin-left: 10vw;
+  margin-top: 0px;
+  width: 200px;
+  height: 100%;
+  color: white;
+  border: 0px;
+  vertical-align: middle;
+  line-height: 10px;
+  position: relative;
+  background-color: rgb(0, 0, 0);
+  transition: 
+    background-color 0.5s ease-in-out
+    ;
+  border-left: 1px solid white;
+}
+
+.dropbutton:hover {
+  background-color: rgb(40, 40, 40);
+  transition: 
+    background-color 0.5s ease;
+  cursor: pointer;
+}
+
+.dropbutton:active {
+  background-color: rgb(40, 40, 40);
+  transition: 
+    background-color 0.5s ease;
+}
+
+.show {
+  display: block;
+}
+
+.form {
   background-color: rgb(13, 23, 56);
   display: inline-block;
   padding: 20px 40px;
-  margin-left: 40px;
-  margin-top: 20px;
+  margin-left: 10vw;
+  margin-top: 0px;
 }
 
 h1{
@@ -41,22 +95,23 @@ input:focus {
 }
 
 .addTask {
-  margin-top: 3%;
-  width: 200px;
+  margin-top: 0%;
+  width: fit-content;
   height: fit-content;
   border: 0px;
   vertical-align: middle;
   line-height: 5px;
   border-radius: 40px;
-  margin-left: 50px;
+  margin-left: 50%;
+  transform: translate(-50%, 0);
   position: relative;
   transition: transform .5s ease-in-out, background-color .5s ease-in-out
 }
 
 .addTask:hover {
-  transition:transform .5s ease-in-out, background-color .5s ease-in-out;
+  transition: transform translateY .5s ease-in-out, background-color .5s ease-in-out;
   /* transition: box-shadow 1s ease-in-out; */
-  transform: translateY(-1px);
+  transform: translate(-50%, -1px);
   border-radius: 40px;
   background-color: rgb(185, 111, 255);
 }
@@ -99,3 +154,4 @@ td {
   color: #000;
   background-color: #ff0000;
 }
+
