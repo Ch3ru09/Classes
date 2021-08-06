@@ -122,8 +122,8 @@ class TodoForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      taskName: '',
-      taskDescription: '',
+      task_name: '',
+      task_description: '',
       tasks: [],
     };
 
@@ -134,7 +134,6 @@ class TodoForm extends React.Component {
  
   handleInputChange(event) {
     const target = event.target;
-    console.log(target);
     this.setState({
       [target.name]: target.value
     });
@@ -143,8 +142,8 @@ class TodoForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.addTodo({
-      taskName: this.state.taskName,
-      taskDescription: this.state.taskDescription,
+      task_name: this.state.taskName,
+      task_description: this.state.taskDescription,
     })
       .then(todo => {
         const tasks = this.state.tasks;
@@ -171,7 +170,10 @@ class TodoForm extends React.Component {
     };
     
     return fetch('http://localhost:3000/api/todos', requestOptions)
-      .then(response => response.json());
+      .then(response => {
+        response.json();
+        console.log(response.json);
+      });
   }
 
   render() {

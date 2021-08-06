@@ -121,8 +121,8 @@ app.post('/todo', (req, res) => {
 })
 
 app.post('/api/todos', (req, res) => {
-  const {taskName, taskDescription, userId} = req.body
-  todoModel.add({taskName, taskDescription, userId})
+  const {task_name, task_description, user_id} = req.body
+  todoModel.add({task_name, task_description, user_id})
     .then(todo => {
       res.json(todo)
     })
