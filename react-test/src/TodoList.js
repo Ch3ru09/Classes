@@ -122,8 +122,8 @@ class TodoForm extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      task_name: '',
-      task_description: '',
+      taskName: '',
+      taskDescription: '',
       tasks: [],
     };
 
@@ -142,8 +142,8 @@ class TodoForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.addTodo({
-      task_name: this.state.taskName,
-      task_description: this.state.taskDescription,
+      taskName: this.state.taskName,
+      taskDescription: this.state.taskDescription,
     })
       .then(todo => {
         const tasks = this.state.tasks;
