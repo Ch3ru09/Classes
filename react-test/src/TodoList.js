@@ -21,7 +21,7 @@ export default class TodoList extends React.Component {
   render() {
     return (
       <div>
-        <TodoForm />
+        <TodoForm addTodo={this.handleAddTodo.bind(this)} />
         <TodoTable 
           tasks={this.state.tasks} 
           removeTodo={this.handleRemoveTodo.bind(this)} 
@@ -72,118 +72,6 @@ export default class TodoList extends React.Component {
       .then(response => response.json());
   }
 
-  handleRemoveTodo(id) {
-    this.removeTodo(id)
-      .then(id => {
-        const tasks = this.state.tasks;
-        tasks.splice(taskPos(id), 1);
-        function taskPos(id) {
-          tasks.indexOf(tasks.forEach(task => {
-            if(task.id == id){
-              return task;
-            }
-            return;
-          }));
-        }
-      });
-  }
-
-  removeTodo(id) {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json'); 
-
-    var raw = JSON.stringify({
-      userId: 1
-    }); 
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-    
-    return fetch('http://localhost:3000/api/todos/remove/' + id, requestOptions)
-      .then(response => response.json());
-  }
-}
-
-class TodoTable extends React.Component {
-
-  render() {
-    return (
-      <div id='allTasks'>
-        <table>
-          <thead>
-            <tr>
-              <td>Is Done</td>
-              <td>Name</td>
-              <td>Description</td>
-              <td>Options</td>
-            </tr>
-          </thead>
-          {this.props.tasks.map(task => {
-            return (
-              <tr key={task.id}>
-                <td>
-                  <input 
-                    type="checkbox"
-                    checked={task.status == 'finished'}
-                    onChange={(event) => this.props.updateTodo(task.id, event.target)}>
-                  </input></td>
-                <td>{task.task_name}</td>
-                <td>{task.task_description}</td>
-                <td><button onClick={this.props.removeTodo(task.id)}>X</button></td>
-              </tr>
-            );
-          })}
-        </table>
-      </div>
-    );
-  }
-
-}
-
-TodoTable.propTypes = {
-  tasks: PropTypes.array,
-  updateTodo: PropTypes.func,
-  removeTodo: PropTypes.func,
-};
-
-class TodoForm extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      taskName: '',
-      taskDescription: '',
-      tasks: [],
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
- 
-  handleInputChange(event) {
-    const target = event.target;
-    this.setState({
-      [target.name]: target.value
-    });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.addTodo({
-      taskName: this.state.taskName,
-      taskDescription: this.state.taskDescription,
-    })
-      .then(todo => {
-        const tasks = this.state.tasks;
-        tasks.push(todo);
-        this.setState({tasks});
-      });
-  }
-
   addTodo({taskName, taskDescription}) {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
@@ -203,8 +91,120 @@ class TodoForm extends React.Component {
     
     return fetch('http://localhost:3000/api/todos', requestOptions)
       .then(response => {
-        response.json();
+        return response.json();
       });
+  }
+
+
+  handleAddTodo({taskName, taskDescription}) {
+    this.addTodo({taskName, taskDescription})
+      .then(todo => {
+        const tasks = this.state.tasks;
+        tasks.push(todo);
+        this.setState({tasks});
+      });
+  }
+
+  handleRemoveTodo(id) {
+    this.removeTodo(id)
+      .then(id => {
+        const tasks = this.state.tasks;
+        const index = tasks.findIndex(task => task.id == id);
+        tasks.splice(index, 1);
+        this.setState({tasks});
+      });
+  }
+
+  removeTodo(id) {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json'); 
+
+    var raw = JSON.stringify({
+      userId: 1
+    }); 
+
+    var requestOptions = {
+      method: 'DELETE',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    return fetch('http://localhost:3000/api/todos/' + id, requestOptions)
+      .then(response => response.json());
+  }
+}
+
+class TodoTable extends React.Component {
+
+  render() {
+    return (
+      <div id='allTasks'>
+        <table>
+          <thead>
+            <tr>
+              <td>Is Done</td>
+              <td>Name</td>
+              <td>Description</td>
+              <td>Options</td>
+            </tr>
+          </thead>
+          <tbody>
+            {this.props.tasks.map(task => {
+              return (
+                <tr key={task.id}>
+                  <td>
+                    <input 
+                      type="checkbox"
+                      checked={task.status == 'finished'}
+                      onChange={(event) => this.props.updateTodo(task.id, event.target)}>
+                    </input></td>
+                  <td>{task.task_name}</td>
+                  <td>{task.task_description}</td>
+                  <td><button onClick={() => this.props.removeTodo(task.id)}>X</button></td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+}
+
+TodoTable.propTypes = {
+  updateTodo: PropTypes.func,
+  removeTodo: PropTypes.func,
+  tasks: PropTypes.array,
+};
+
+class TodoForm extends React.Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      taskName: '',
+      taskDescription: '',
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+
+ 
+  handleInputChange(event) {
+    const target = event.target;
+    this.setState({
+      [target.name]: target.value
+    });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.addTodo({
+      taskName: this.state.taskName,
+      taskDescription: this.state.taskDescription,
+    });
   }
 
   render() {
@@ -228,3 +228,7 @@ class TodoForm extends React.Component {
     );
   }
 }
+
+TodoForm.propTypes = {
+  addTodo: PropTypes.func,
+};

@@ -146,7 +146,7 @@ app.put('/api/todos/:id', (req, res) => {
     })
 })
 
-app.post('/api/todos/remove/:id', (req, res) => {
+app.delete('/api/todos/:id', (req, res) => {
   const {userId} = req.body
   todoModel.remove(req.params.id, userId)
     .then(id => {
