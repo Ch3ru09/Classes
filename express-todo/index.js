@@ -9,8 +9,10 @@ const accountModel = require('./model/accounts')
 var redirectIfNoLogin = function (req, res, next) {
   const userId = req.session.userId
   if (userId == 'undefined') {
+    // return res.status(403)
     return res.redirect(301, '/login')
   }
+  // req.user = user
   next()
 }
 

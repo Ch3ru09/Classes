@@ -6,7 +6,7 @@ const db = require('./db')
 
 exports.signup = function({username, password, email}) {
   // salts here
-  const salt = createSalt()
+  const salt = randomString(64)
   const saltedPassword = password + salt
 
   // encryption
@@ -20,6 +20,7 @@ exports.signup = function({username, password, email}) {
     password: hashedPassword,
     email,
     salt,
+    token: randomString(32)
   })
     .then(results => {
       const id = results[0].insertId
@@ -87,27 +88,27 @@ function getStoredPromise(username) {
 }
 
 function fetch(id) {
-  return db.getConn().query('select id, username, email, reg_time from users where id = ?', [id])
+  return db.getConn().query('select id, username, email, reg_time, token from users where id = ?', [id])
     .then(results => {
-      const {id, username, email, reg_time} = results[0][0]
+      const {id, username, email, reg_time, token} = results[0][0]
       return {
         id,
         username,
         email,
-        regTime: reg_time
+        regTime: reg_time,
+        token,
       }
     })
 }
 
-function createSalt() {
-  // salt creation
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!/\\@#~:|"
-  const saltlength = 255
-  let salt = "";
+function randomString(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!/\\@#~:|'
+  length = length || 32
+  let result = ''
 
-  for (let i = 0; i < saltlength; i++) {
+  for (let i = 0; i < length; i++) {
     const randomInt = Math.floor(Math.random() * characters.length)
-    salt += characters[randomInt]
+    result += characters[randomInt]
   }
-  return salt
+  return result
 }

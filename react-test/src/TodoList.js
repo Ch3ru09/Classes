@@ -35,6 +35,9 @@ export default class TodoList extends React.Component {
   getTodos() {
     var requestOptions = {
       method: 'GET',
+      //headers: {
+      //  'x-user-token': this.props.user.token
+      //}
     }; 
 
     return fetch('http://localhost:3000/api/todos?userId=1', requestOptions)
