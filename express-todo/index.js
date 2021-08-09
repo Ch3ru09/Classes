@@ -124,15 +124,14 @@ app.post('/api/todos', (req, res) => {
   const {taskName, taskDescription, userId} = req.body
   todoModel.add({taskName, taskDescription, userId})
     .then(todo => {
-      res.json(todo)
+      return res.json(todo)
     })
 })
 
 app.get('/api/todos', (_req, res) => {
   todoModel.fetchTodos(1)
     .then(todos => {
-      console.log('>>', todos)
-      res.json(todos)
+      return res.json(todos)
     })
 })
 
@@ -144,6 +143,14 @@ app.put('/api/todos/:id', (req, res) => {
         return res.json(todo)
       }
       return res.status(404).end()
+    })
+})
+
+app.post('/api/todos/remove/:id', (req, res) => {
+  const {userId} = req.body
+  todoModel.remove(req.params.id, userId)
+    .then(id => {
+      return res.send(id)
     })
 })
 

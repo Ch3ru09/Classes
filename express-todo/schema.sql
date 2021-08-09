@@ -1,10 +1,10 @@
 -- my_todos.tasks definition
 CREATE TABLE `tasks` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `taskName` varchar(255) NOT NULL,
-  `taskDescription` varchar(255) DEFAULT NULL,
+  `task_name` varchar(255) NOT NULL,
+  `task_description` varchar(255) DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'unfinished',
-  `userId` int unsigned NOT NULL,
+  `user_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 

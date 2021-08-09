@@ -13,7 +13,7 @@ export default class TodoList extends React.Component {
 
   componentDidMount() {
     this.getTodos()
-      .then(tasks=> {
+      .then(tasks => {
         this.setState({tasks});
       });
   }
@@ -22,7 +22,12 @@ export default class TodoList extends React.Component {
     return (
       <div>
         <TodoForm />
-        <TodoTable tasks={this.state.tasks} updateTodo={this.handleUpdateTodo.bind(this)} />
+        <TodoTable 
+          tasks={this.state.tasks} 
+          removeTodo={this.handleRemoveTodo.bind(this)} 
+          updateTodo={this.handleUpdateTodo.bind(this)} 
+          
+        />
       </div>
     );
   }
@@ -67,6 +72,40 @@ export default class TodoList extends React.Component {
       .then(response => response.json());
   }
 
+  handleRemoveTodo(id) {
+    this.removeTodo(id)
+      .then(id => {
+        const tasks = this.state.tasks;
+        tasks.splice(taskPos(id), 1);
+        function taskPos(id) {
+          tasks.indexOf(tasks.forEach(task => {
+            if(task.id == id){
+              return task;
+            }
+            return;
+          }));
+        }
+      });
+  }
+
+  removeTodo(id) {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json'); 
+
+    var raw = JSON.stringify({
+      userId: 1
+    }); 
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    return fetch('http://localhost:3000/api/todos/remove/' + id, requestOptions)
+      .then(response => response.json());
+  }
 }
 
 class TodoTable extends React.Component {
@@ -86,13 +125,15 @@ class TodoTable extends React.Component {
           {this.props.tasks.map(task => {
             return (
               <tr key={task.id}>
-                <td><input type="checkbox"
-                           checked={task.status == 'finished'}
-                           onChange={(event) => this.props.updateTodo(task.id, event.target)}>
-                    </input></td>
-                <td>{task.taskName}</td>
-                <td>{task.taskDescription}</td>
-                <td><button>X</button></td>
+                <td>
+                  <input 
+                    type="checkbox"
+                    checked={task.status == 'finished'}
+                    onChange={(event) => this.props.updateTodo(task.id, event.target)}>
+                  </input></td>
+                <td>{task.task_name}</td>
+                <td>{task.task_description}</td>
+                <td><button onClick={this.props.removeTodo(task.id)}>X</button></td>
               </tr>
             );
           })}
@@ -106,6 +147,7 @@ class TodoTable extends React.Component {
 TodoTable.propTypes = {
   tasks: PropTypes.array,
   updateTodo: PropTypes.func,
+  removeTodo: PropTypes.func,
 };
 
 class TodoForm extends React.Component {
@@ -160,7 +202,9 @@ class TodoForm extends React.Component {
     };
     
     return fetch('http://localhost:3000/api/todos', requestOptions)
-      .then(response => response.json());
+      .then(response => {
+        response.json();
+      });
   }
 
   render() {
