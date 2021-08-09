@@ -8,11 +8,11 @@ exports.getAll = function(userId) {
     })
 }
 
-exports.add = function({task_name, task_description, user_id}) {
+exports.add = function({taskName, taskDescription, userId}) {
   return db.getConn().query('insert into tasks set ?', {
-    task_name,
-    task_description,
-    user_id
+    task_name: taskName,
+    task_description: taskDescription,
+    user_id: userId
   })
     .then(result => {
       const id = result[0].insertId
@@ -39,5 +39,12 @@ exports.update = function(checkstatus, id, userId) {
             return rows[0]
           })
       }
+    })
+}
+
+exports.remove = function(id, userId) {
+  return db.getConn().query('delete from tasks where id = ? and user_id = ?', [id, userId])
+    .then(() => {
+      return id
     })
 }
