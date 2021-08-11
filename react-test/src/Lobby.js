@@ -2,17 +2,27 @@ import React from 'react';
 import propTypes from 'prop-types';
 import './ressources/Lobby.css';
 
-export default function Lobby(user) {
-  return (
-    <>
-      <LobbyPage user />
-    </>
-  );
+export default class Lobby extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <>
+        <LobbyPage 
+          handleLogin={this.handleLogin.bind(this)}
+        />
+      </>
+    );
+  }
+  
 }
 
 LobbyPage.propTypes = {
   user: propTypes.array
-}
+};
 
 class LobbyPage extends React.Component {
   

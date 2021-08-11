@@ -31,7 +31,10 @@ class App extends React.Component {
       );
     }
     return (
-      <Lobby user={this.state.user} />
+      <Lobby 
+        user={this.state.user} 
+        handleLogin={this.handleLogin.bind(this)}
+      />
     );
   }
 }
