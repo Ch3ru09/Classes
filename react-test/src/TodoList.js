@@ -20,7 +20,7 @@ export default class TodoList extends React.Component {
 
   render() {
     return (
-      <div>
+      <>
         <TodoForm addTodo={this.handleAddTodo.bind(this)} />
         <TodoTable 
           tasks={this.state.tasks} 
@@ -28,7 +28,7 @@ export default class TodoList extends React.Component {
           updateTodo={this.handleUpdateTodo.bind(this)} 
           
         />
-      </div>
+      </>
     );
   }
 

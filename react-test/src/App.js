@@ -1,5 +1,6 @@
 import React from 'react';
 import TodoList from './TodoList';
+import Lobby from './Lobby';
 
 class App extends React.Component {
 
@@ -23,14 +24,14 @@ class App extends React.Component {
   }
 
   render() {
-    //if (this.state.user) {
+    if (this.state.user) {
       return (
         <TodoList user={this.state.user} />
       );
-    //}
-    // return (
-    //   <Login login={this.handleLogin.bind(this)} />
-    // );
+    }
+    return (
+      <Lobby />
+    );
   }
 }
 
