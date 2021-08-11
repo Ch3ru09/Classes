@@ -57,7 +57,7 @@ app.post('/login', (req, res) => {
   //   }
   // })
   accountModel.loginPromise({username, password})
-    .then(userId => {
+    .then(({id: userId}) => {
       if (typeof userId != 'undefined') {
         req.session.userId = userId
         res.redirect(301, '/todo')
@@ -97,7 +97,7 @@ app.use('/todo', redirectIfNoLogin)
 
 app.get('/todo', (req, res) => {
   const userId = req.session.userId
-  accountModel.getUser(userId)
+  accountModel.fetch(userId)
     .then((info) => {
       return {
         username: info.username, 
@@ -119,6 +119,22 @@ app.post('/todo', (req, res) => {
   todoModel.add({taskName, taskDescription, userId})
     .then(() => {
       res.redirect(301, '/todo')
+    })
+})
+
+app.post('/api/signup', (req, res) => {
+  const {username, email, password} = req.body
+  accountModel.signup({username, email, password}) 
+    .then(user => {
+      return res.json(user)
+    })
+})
+
+app.post('/api/login', (req, res) => {
+  const {username, password} = req.body
+  accountModel.loginPromise({username, password})
+    .then(user => {
+      return res.json(user)
     })
 })
 

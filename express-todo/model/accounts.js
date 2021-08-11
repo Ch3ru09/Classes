@@ -24,13 +24,13 @@ exports.signup = function({username, password, email}) {
   })
     .then(results => {
       const id = results[0].insertId
-      return fetch(id)
+      return exports.fetch(id)
     })
 }
 
 exports.login = ({username, password}, callback) => {
   // takes username, gets the salt and hashed password, hashes login password + salt and compare
-  const isUser = getStored(username, (results) => {
+  getStored(username, (results) => {
     const {userId, storedPassword, storedSalt} = results;
     const inputPassword = sha1(password + storedSalt)
     if (inputPassword == storedPassword) {
@@ -58,21 +58,9 @@ exports.loginPromise = ({username, password}) => {
     .then(({userId, storedPassword, storedSalt}) => {
       const inputPassword = sha1(password + storedSalt)
       if (inputPassword == storedPassword) {
-        return userId
+        return exports.fetch(userId)
       }
       return 
-    })
-}
-
-// TODO move to account.js * ok *
-exports.getUser = (userId) => {
-  return db.getConn().query('select username, email from users where id = ?', [userId])
-    .then(([results]) => { // TODO results = [rows, fields]; userInfo = rows[0]
-      // console.log('>>', results)
-      return {
-        username: results[0].username,
-        email: results[0].email
-      }
     })
 }
 
@@ -87,7 +75,7 @@ function getStoredPromise(username) {
     })
 }
 
-function fetch(id) {
+exports.fetch = (id) => {
   return db.getConn().query('select id, username, email, reg_time, token from users where id = ?', [id])
     .then(results => {
       const {id, username, email, reg_time, token} = results[0][0]
