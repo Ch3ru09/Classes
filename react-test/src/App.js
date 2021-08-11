@@ -7,8 +7,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: []
     };
+  
   }
 
   componentDidMount() {
@@ -30,7 +31,7 @@ class App extends React.Component {
       );
     }
     return (
-      <Lobby />
+      <Lobby user={this.state.user} />
     );
   }
 }

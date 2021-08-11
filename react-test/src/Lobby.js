@@ -1,21 +1,30 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 import './ressources/Lobby.css';
 
-export default function Lobby() {
+export default function Lobby(user) {
   return (
     <>
-      <LobbyPage />
+      <LobbyPage user />
     </>
   );
+}
+
+LobbyPage.propTypes = {
+  user: propTypes.array
 }
 
 class LobbyPage extends React.Component {
   
   constructor(props) {
     super(props);
-    this.setState({});
+    this.setState({
+      user: this.props.user
+    });
+    
   }
+
+  
 
   render() {
     return (
