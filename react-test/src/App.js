@@ -1,5 +1,5 @@
 import React from 'react';
-import Lobby from './Lobby';
+import Lobby from './lobby';
 
 class App extends React.Component {
 

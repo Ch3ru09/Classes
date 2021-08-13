@@ -1,9 +1,11 @@
 import React from 'react';
 import propTypes from 'prop-types';
-import './ressources/Lobby.css';
-import Login from './Login';
+
+import Login from './login';
 import Signup from './signup';
-import TodoList from './TodoList';
+import TodoList from './todo-list';
+
+import './ressources/lobby.css';
 
 export default class Lobby extends React.Component {
 
@@ -14,8 +16,7 @@ export default class Lobby extends React.Component {
   render() {
     return (
       <>
-        <LobbyPage 
-        />
+        <LobbyPage />
       </>
     );
   }
@@ -63,6 +64,13 @@ class LobbyPage extends React.Component {
   }
 
   login({username, password}) {
+    this.doLogin({username, password})
+      .then(user => {
+        this.setState({user});
+      });
+  }
+
+  doLogin({username, password}) {
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -83,7 +91,7 @@ class LobbyPage extends React.Component {
       <div className="lobbyPage">
         <header className="header">
           {this.state.user
-            ?  <div className="profile">profile</div>
+            ? <div className="profile">profile</div>
             : <div>
               <div>
                 <button 

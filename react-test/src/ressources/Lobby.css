@@ -1,6 +1,8 @@
 .lobbyPage {
-  height: 100%;
-  background-image: url('./4327734.jpg');
+  height: 100vh;
+  background-image: url('./thumb-1920-742320.png');
+  background-repeat: no-repeat;
+  background-position: left center;
   background-size: cover;
   font-family: Quicksand;
 }
@@ -27,6 +29,21 @@
   line-height: 60px;
 }
 
+.header button {
+  display: block;
+  height: 100%;
+  line-height: 60px;
+  width: 100px;
+  background-color: #000;
+  transition: background-color 0.25s;
+  font-size: 100%;
+}
+
+.header button:hover {
+  background-color:rgb(30, 30, 30);
+  transition: background-color 0.25s;
+}
+
 .profile {
   border-left: 1px solid #fff;
   padding-right: 50px;
@@ -36,6 +53,8 @@
 .signup {
   padding-right: 30px;
   padding-left: 30px;
+  margin-right: 20px;
+  margin-left: 5px;
   background-color: black;
   color: #fff;
   outline: none;
@@ -50,3 +69,6 @@
   outline: none;
   border: none;
 }
+
+
+

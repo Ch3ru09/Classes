@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './ressources/login.css';
 
-export default function Login() {
+export default function Login(props) {
   return (
     <>
-      <LoginPage />
+      <LoginPage signup={props.login} />
     </>
   );
 }
+
+Login.propTypes = {
+  login: PropTypes.func
+};
 
 class LoginPage extends React.Component {
 
@@ -26,23 +31,36 @@ class LoginPage extends React.Component {
       [target.name]: target.value
     });
   }
+
+  handleLogin(event) {
+    event.preventDefault();
+    this.props.login(this.state);
+  }
   
   render() {
     return (
-      <div>
-        <h1>Login</h1>
-        <form>
-          <label>username</label>
-          <input type='text' name='username'
-            value={this.state.username}
-            onChange={this.handleInputChange} />
-          <label>password</label>
-          <input type='password' name='password'
-            value={this.state.password}
-            onChange={this.handleInputChange} />
-          <input type='submit' value='Login' />
-        </form>
+      <div className="form">
+        <div className="formContent">
+          <h1>Login</h1>
+          <form>
+            <input type='text' name='username'
+              value={this.state.username}
+              onChange={this.handleInputChange}
+              placeholder="username"/>
+            <br/>
+            <input type='password' name='password'
+              value={this.state.password}
+              onChange={this.handleInputChange} 
+              placeholder="password"/>
+            <br/>
+            <input type='submit' value='Login' onClick={this.handleLogin.bind(this)} />
+          </form>
+        </div>
       </div>
     );
   }
 }
+
+LoginPage.propTypes = {
+  login: PropTypes.func
+};
