@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './ressources/signup.css';
+import './ressources/login-signup.css';
 
 export default function Signup(props) {
   return (
@@ -14,7 +14,7 @@ Signup.propTypes = {
 };
 
 class SignupPage extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +39,7 @@ class SignupPage extends React.Component {
   
   render() {
     return (
-      <div className="form">
+      <div id="form">
         <div className="formContent">
           <h1>Signup</h1>
           <form>
@@ -47,21 +47,28 @@ class SignupPage extends React.Component {
               type='text' 
               name='username'
               placeholder='username'
+              className="formInput"
               value={this.state.username}
               onChange={this.handleInputChange} />
             <input 
               type='text'
               name='email'
               placeholder='email'
+              className="formInput"
               value={this.state.email}
               onChange={this.handleInputChange} />
             <input 
               type='password'
               name='password'
+              className="formInput"
               placeholder='password'
               value ={this.state.password}
               onChange={this.handleInputChange} />
-            <input type='submit' value='Signup' onClick={this.handleSignup.bind(this)} />
+            <input 
+              type='submit' 
+              value='Signup' 
+              className="submit"
+              onClick={this.handleSignup.bind(this)} />
           </form>
         </div>
       </div>

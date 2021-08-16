@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import localStorage from 'local-storage';
 
 import Login from './login';
 import Signup from './signup';
@@ -33,6 +34,10 @@ class LobbyPage extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({user: localStorage.get('user-info')});
+  }
+
   forwardPage(page) {
     this.setState({currentPage: page});
   }
@@ -40,9 +45,7 @@ class LobbyPage extends React.Component {
   signup({email, username, password}) {
     this.doSignup({email, username, password})
       .then(user => {
-        this.setState({
-          user,
-        });
+        this.setState({user});
       });
   }
 
@@ -66,7 +69,11 @@ class LobbyPage extends React.Component {
   login({username, password}) {
     this.doLogin({username, password})
       .then(user => {
+        localStorage.set('user-info', user);
         this.setState({user});
+      })
+      .catch(() => {
+        
       });
   }
 

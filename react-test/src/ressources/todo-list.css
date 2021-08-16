@@ -1,5 +1,16 @@
-body {
-  background-image: url("%PUBLIC_URL%/2000944_original.jpg");
+.todoBody {
+  background-image: url('./2000944.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+  margin-top: 0px;
+  color: white;
+}
+
+.title {
+  margin-top: 0px;
 }
 
 .table {

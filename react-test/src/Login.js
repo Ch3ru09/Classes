@@ -1,15 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './ressources/login.css';
+import { PropTypes } from 'prop-types';
+import './ressources/login-signup.css';
 
 export default function Login(props) {
   return (
     <>
-      <LoginPage signup={props.login} />
+      <LoginPage login={props.login} />
     </>
   );
 }
-
 Login.propTypes = {
   login: PropTypes.func
 };
@@ -39,28 +38,35 @@ class LoginPage extends React.Component {
   
   render() {
     return (
-      <div className="form">
+      <div id="form">
         <div className="formContent">
           <h1>Login</h1>
           <form>
-            <input type='text' name='username'
+            <input 
+              type='text' 
+              name='username'
+              className="formInput"
               value={this.state.username}
               onChange={this.handleInputChange}
               placeholder="username"/>
-            <br/>
-            <input type='password' name='password'
+            <input 
+              type='password' 
+              name='password'
+              className="formInput"
               value={this.state.password}
               onChange={this.handleInputChange} 
               placeholder="password"/>
-            <br/>
-            <input type='submit' value='Login' onClick={this.handleLogin.bind(this)} />
+            <input 
+              type='submit' 
+              value='Login' 
+              className="submit"
+              onClick={this.handleLogin.bind(this)} />
           </form>
         </div>
       </div>
     );
   }
 }
-
 LoginPage.propTypes = {
   login: PropTypes.func
 };
