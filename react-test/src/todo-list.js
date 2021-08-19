@@ -21,12 +21,12 @@ export default class TodoList extends React.Component {
   render() {
     return (
       <div className="todoBody">
+        <div className="todoContent" />
         <TodoForm addTodo={this.handleAddTodo.bind(this)} />
         <TodoTable
           tasks={this.state.tasks} 
           removeTodo={this.handleRemoveTodo.bind(this)} 
           updateTodo={this.handleUpdateTodo.bind(this)} 
-          
         />
       </div>
     );
@@ -100,6 +100,7 @@ export default class TodoList extends React.Component {
 
 
   handleAddTodo({taskName, taskDescription}) {
+
     this.addTodo({taskName, taskDescription})
       .then(todo => {
         const tasks = this.state.tasks;
@@ -138,12 +139,16 @@ export default class TodoList extends React.Component {
   }
 }
 
+TodoList.propTypes = {
+  user: PropTypes.object,
+};
+
 class TodoTable extends React.Component {
 
   render() {
     return (
       <div id='allTasks'>
-        <table>
+        <table className='theTable' border="1">
           <thead>
             <tr>
               <td>Is Done</td>
@@ -160,11 +165,12 @@ class TodoTable extends React.Component {
                     <input 
                       type="checkbox"
                       checked={task.status == 'finished'}
-                      onChange={(event) => this.props.updateTodo(task.id, event.target)}>
-                    </input></td>
+                      onChange={(event) => this.props.updateTodo(task.id, event.target)} 
+                      className="checkbox" />
+                  </td>
                   <td>{task.task_name}</td>
                   <td>{task.task_description}</td>
-                  <td><button onClick={() => this.props.removeTodo(task.id)}>X</button></td>
+                  <td><button onClick={() => this.props.removeTodo(task.id)} className="removeTask">X</button></td>
                 </tr>
               );
             })}
@@ -212,13 +218,13 @@ class TodoForm extends React.Component {
 
   render() {
     return (
-      <form>
+      <form className="addTaskForm">
         <h1 className="title"> Todos </h1>
         <input 
           name='taskName'
           type='textarea'
           value={this.state.taskName} 
-          onChange={this.handleInputChange} 
+          onChange={this.handleInputChange}
         />
         <input 
           name='taskDescription'
@@ -226,7 +232,11 @@ class TodoForm extends React.Component {
           value={this.state.taskDescription} 
           onChange={this.handleInputChange} 
         />
-        <input type='submit' value='Submit' onClick={this.handleSubmit} />
+        <input 
+          type='submit' 
+          value='Submit' 
+          onClick={this.handleSubmit} 
+          className="submitButton" />
       </form>
     );
   }

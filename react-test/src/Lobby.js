@@ -93,13 +93,30 @@ class LobbyPage extends React.Component {
       .then(response => response.json());
   }
 
+  toggleDropdown() {
+    document.getElementById('profileDropdown').classList.toggle('show');
+  }
+
+  signout() {
+    localStorage.remove('user-info');
+    this.setState({user: null});
+  }
+
   render() {
     return (
       <div className="lobbyPage">
         <header className="header">
           {this.state.user
-            ? <div className="profile">profile</div>
-            : <div>
+            ? <div className="profileHeader">
+              <button className="profileBtn" onClick={() => this.toggleDropdown()}>Profile</button>
+              <div id="profileDropdown" className="profile">
+                <a onClick={() => {}}>Manage</a>
+                <a onClick={() => {}}>IDK yet</a>
+                <a onClick={() => this.signout()}>Signout</a>
+              </div>
+            </div>
+            
+            : <div className="headerBtn">
               <div>
                 <button 
                   className="signup"

@@ -30,6 +30,10 @@
   color: white;
 }
 
+.submitForm {
+  margin-left: 0px;
+}
+
 .submit {
   width: 90px;
   height: 30px;
