@@ -99,7 +99,10 @@ class LobbyPage extends React.Component {
 
   signout() {
     localStorage.remove('user-info');
-    this.setState({user: null});
+    this.setState({
+      user: null,
+      currentPage: 'login',
+    });
   }
 
   render() {
