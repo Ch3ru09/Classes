@@ -60,7 +60,7 @@ exports.loginPromise = ({username, password}) => {
       if (inputPassword == storedPassword) {
         return exports.fetch(userId)
       }
-      return 
+      return
     })
 }
 
@@ -73,6 +73,7 @@ function getStoredPromise(username) {
         storedSalt: rows[0].salt,
       }
     })
+    .catch(err => console.log('>>', err))
 }
 
 exports.fetch = (id) => {

@@ -136,6 +136,9 @@ app.post('/api/login', (req, res) => {
     .then(user => {
       return res.json(user)
     })
+    .catch(err => {
+      return res.send(err)
+    })
 })
 
 app.post('/api/todos', (req, res) => {

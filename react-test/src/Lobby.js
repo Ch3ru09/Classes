@@ -70,10 +70,12 @@ class LobbyPage extends React.Component {
     this.doLogin({username, password})
       .then(user => {
         localStorage.set('user-info', user);
+        document.getElementById('wrongAccount').classList.remove('show');
         this.setState({user});
       })
-      .catch(() => {
-        
+      .catch(err => {
+        console.log('>>', err);
+        document.getElementById('wrongAccount').classList.add('show');
       });
   }
 
@@ -97,7 +99,7 @@ class LobbyPage extends React.Component {
     document.getElementById('profileDropdown').classList.toggle('show');
   }
 
-  signout() {
+  logout() {
     localStorage.remove('user-info');
     this.setState({
       user: null,
@@ -115,7 +117,7 @@ class LobbyPage extends React.Component {
               <div id="profileDropdown" className="profile">
                 <a onClick={() => {}}>Manage</a>
                 <a onClick={() => {}}>IDK yet</a>
-                <a onClick={() => this.signout()}>Signout</a>
+                <a onClick={() => this.logout()}>Logout</a>
               </div>
             </div>
             

@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { useAlert } from 'react-alert';
 import './ressources/login-signup.css';
 
 export default function Login(props) {
@@ -33,7 +34,12 @@ class LoginPage extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    this.props.login(this.state);
+    if (this.state.username.trim() != '' && this.state.password.trim() != '') {
+      this.props.login(this.state);
+    } else {
+      useAlert().show('hello');
+    }
+    
   }
   
   render() {
@@ -48,17 +54,20 @@ class LoginPage extends React.Component {
               className="formInput"
               value={this.state.username}
               onChange={this.handleInputChange}
-              placeholder="username"/>
+              placeholder="username"
+              required />
             <input 
               type='password' 
               name='password'
               className="formInput"
               value={this.state.password}
               onChange={this.handleInputChange} 
-              placeholder="password"/>
+              placeholder="password"
+              required />
+            <div id="wrongAccount" className="wrongAccount">This is the wrong username or password</div>
             <input 
-              type='submit' 
-              value='Login' 
+              type='submit'
+              value='Login'
               className="submit"
               onClick={this.handleLogin.bind(this)} />
           </form>
