@@ -39,7 +39,7 @@
 .wrongAccount {
   margin: 10px 0;
   color: brown;
-  display: none;
+  display: block;
 }
 
 .submit {

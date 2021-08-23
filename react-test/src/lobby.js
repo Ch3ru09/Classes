@@ -45,6 +45,7 @@ class LobbyPage extends React.Component {
   signup({email, username, password}) {
     this.doSignup({email, username, password})
       .then(user => {
+        localStorage.set('user-info', user);
         this.setState({user});
       });
   }
@@ -66,33 +67,9 @@ class LobbyPage extends React.Component {
       .then(response => response.json());
   }
 
-  login({username, password}) {
-    this.doLogin({username, password})
-      .then(user => {
-        localStorage.set('user-info', user);
-        document.getElementById('wrongAccount').classList.remove('show');
-        this.setState({user});
-      })
-      .catch(err => {
-        console.log('>>', err);
-        document.getElementById('wrongAccount').classList.add('show');
-      });
-  }
-
-  doLogin({username, password}) {
-    var requestOptions = {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    };
-    
-    return fetch('http://localhost:3000/api/login', requestOptions)
-      .then(response => response.json());
+  login(user) {
+    localStorage.set('user-info', user);
+    this.setState({user});
   }
 
   toggleDropdown() {
@@ -113,7 +90,7 @@ class LobbyPage extends React.Component {
         <header className="header">
           {this.state.user
             ? <div className="profileHeader">
-              <button className="profileBtn" onClick={() => this.toggleDropdown()}>Profile</button>
+              <button className="profileBtn" onClick={() => this.toggleDropdown()}>{this.state.user.username}</button>
               <div id="profileDropdown" className="profile">
                 <a onClick={() => {}}>Manage</a>
                 <a onClick={() => {}}>IDK yet</a>

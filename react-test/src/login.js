@@ -21,6 +21,7 @@ class LoginPage extends React.Component {
     this.state = {
       username: '',
       password: '',
+      errMessage: null,
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -35,12 +36,42 @@ class LoginPage extends React.Component {
   handleLogin(event) {
     event.preventDefault();
     if (this.state.username.trim() != '' && this.state.password.trim() != '') {
-      this.props.login(this.state);
+      this.doLogin(this.state)
+        .then(user => {
+          this.props.login(user);
+        })
+        .catch(err => {
+          this.setState({errMessage: err.message});
+        });
     } else {
-      useAlert().show('hello');
+      this.setState({errMessage: 'Username or password is required.'});
     }
     
   }
+
+  doLogin({username, password}) {
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    };
+    
+    return fetch('http://localhost:3000/api/login', requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json().then(errBody => {
+          throw new Error(errBody.errMessage);
+        });
+      });
+  }
+
   
   render() {
     return (
@@ -64,7 +95,10 @@ class LoginPage extends React.Component {
               onChange={this.handleInputChange} 
               placeholder="password"
               required />
-            <div id="wrongAccount" className="wrongAccount">This is the wrong username or password</div>
+            {
+              this.state.errMessage &&
+                <div id="wrongAccount" className="wrongAccount">{this.state.errMessage}</div>
+            }
             <input 
               type='submit'
               value='Login'

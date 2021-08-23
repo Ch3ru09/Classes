@@ -67,17 +67,35 @@ exports.loginPromise = ({username, password}) => {
 function getStoredPromise(username) {
   return db.getConn().query('select id, password, salt from users where username = ?', [username])
     .then(([rows])=> {
+      const user = rows[0]
+      if (!user) {
+        console.debug('User is not exists. username=' + username)
+        throw new Error('User is not exists or password does not match.')
+      }
       return {
         userId: rows[0].id,
         storedPassword: rows[0].password,
         storedSalt: rows[0].salt,
       }
     })
-    .catch(err => console.log('>>', err))
 }
 
 exports.fetch = (id) => {
   return db.getConn().query('select id, username, email, reg_time, token from users where id = ?', [id])
+    .then(results => {
+      const {id, username, email, reg_time, token} = results[0][0]
+      return {
+        id,
+        username,
+        email,
+        regTime: reg_time,
+        token,
+      }
+    })
+}
+
+exports.fetchByToken = (token) => {
+  return db.getConn().query('select id, username, email, reg_time, token from users where token = ?', [token])
     .then(results => {
       const {id, username, email, reg_time, token} = results[0][0]
       return {

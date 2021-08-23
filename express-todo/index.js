@@ -16,6 +16,16 @@ var redirectIfNoLogin = function (req, res, next) {
   next()
 }
 
+const fetchUserByToken = (req, res, next) => {
+  const userToken = req.headers['x-user-token']
+  accountModel.fetchByToken(userToken)
+    .then(user => {
+      req.user = user
+      next()
+    })
+    // TODO user is not exists
+}
+
 const app = express()
 const port = 3000
 
@@ -134,31 +144,36 @@ app.post('/api/login', (req, res) => {
   const {username, password} = req.body
   accountModel.loginPromise({username, password})
     .then(user => {
+      console.log('>>>', user)
       return res.json(user)
     })
     .catch(err => {
-      return res.send(err)
+      return res.status(401).send({
+        errMessage: err.message
+      })
     })
 })
 
+app.use('/api/todos', fetchUserByToken)
+
 app.post('/api/todos', (req, res) => {
-  const {taskName, taskDescription, userId} = req.body
-  todoModel.add({taskName, taskDescription, userId})
+  const {taskName, taskDescription} = req.body
+  todoModel.add({taskName, taskDescription, userId: req.user.id})
     .then(todo => {
       return res.json(todo)
     })
 })
 
-app.get('/api/todos', (_req, res) => {
-  todoModel.fetchTodos(1)
+app.get('/api/todos', (req, res) => {
+  todoModel.fetchTodos(req.user.id)
     .then(todos => {
       return res.json(todos)
     })
 })
 
 app.put('/api/todos/:id', (req, res) => {
-  const {status, userId} = req.body
-  todoModel.update(status, req.params.id, userId)
+  const {status} = req.body
+  todoModel.update(status, req.params.id, req.user.id)
     .then(todo => {
       if (todo) {
         return res.json(todo)
@@ -168,8 +183,7 @@ app.put('/api/todos/:id', (req, res) => {
 })
 
 app.delete('/api/todos/:id', (req, res) => {
-  const {userId} = req.body
-  todoModel.remove(req.params.id, userId)
+  todoModel.remove(req.params.id, req.user.id)
     .then(id => {
       return res.send(id)
     })

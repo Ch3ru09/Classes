@@ -35,12 +35,12 @@ export default class TodoList extends React.Component {
   getTodos() {
     var requestOptions = {
       method: 'GET',
-      //headers: {
-      //  'x-user-token': this.props.user.token
-      //}
+      headers: {
+        'x-user-token': this.props.user.token
+      }
     }; 
 
-    return fetch('http://localhost:3000/api/todos?userId=1', requestOptions)
+    return fetch('http://localhost:3000/api/todos', requestOptions)
       .then(response => response.json());
   }
 
@@ -56,19 +56,17 @@ export default class TodoList extends React.Component {
   }
 
   updateTodo(id, {status}) {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    
     var raw = JSON.stringify({
       status,
-      userId: 1
     });
     
     var requestOptions = {
       method: 'PUT',
-      headers: myHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-token': this.props.user.token
+      },
       body: raw,
-      redirect: 'follow'
     };
     
     return fetch('http://localhost:3000/api/todos/' + id, requestOptions)
@@ -76,20 +74,18 @@ export default class TodoList extends React.Component {
   }
 
   addTodo({taskName, taskDescription}) {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    
     var raw = JSON.stringify({
       taskName,
       taskDescription,
-      userId: 1
     });
     
     var requestOptions = {
       method: 'POST',
-      headers: myHeaders,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-token': this.props.user.token
+      },
       body: raw,
-      redirect: 'follow'
     };
     
     return fetch('http://localhost:3000/api/todos', requestOptions)
@@ -120,18 +116,12 @@ export default class TodoList extends React.Component {
   }
 
   removeTodo(id) {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json'); 
-
-    var raw = JSON.stringify({
-      userId: 1
-    }); 
-
     var requestOptions = {
       method: 'DELETE',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-token': this.props.user.token
+      },
     };
     
     return fetch('http://localhost:3000/api/todos/' + id, requestOptions)
