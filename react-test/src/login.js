@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { useAlert } from 'react-alert';
 import './ressources/login-signup.css';
 
 export default function Login(props) {
@@ -77,7 +76,7 @@ class LoginPage extends React.Component {
     return (
       <div id="form">
         <div className="formContent">
-          <h1>Login</h1>
+          <h1> Login </h1>
           <form>
             <input 
               type='text' 
@@ -97,7 +96,7 @@ class LoginPage extends React.Component {
               required />
             {
               this.state.errMessage &&
-                <div id="wrongAccount" className="wrongAccount">{this.state.errMessage}</div>
+                <div id="wrongAccount" className="wrongAccount"> {this.state.errMessage} </div>
             }
             <input 
               type='submit'
@@ -113,3 +112,4 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
   login: PropTypes.func
 };
+

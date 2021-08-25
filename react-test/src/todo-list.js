@@ -15,6 +15,9 @@ export default class TodoList extends React.Component {
     this.getTodos()
       .then(tasks => {
         this.setState({tasks});
+      })
+      .catch(() => {
+        this.props.logout();
       });
   }
 
@@ -52,6 +55,9 @@ export default class TodoList extends React.Component {
         const index = tasks.findIndex(t => t.id == todo.id);
         tasks.splice(index, 1, todo);
         this.setState({tasks});
+      })
+      .catch(() => {
+        this.props.logout();
       });
   }
 
@@ -102,6 +108,9 @@ export default class TodoList extends React.Component {
         const tasks = this.state.tasks;
         tasks.push(todo);
         this.setState({tasks});
+      })
+      .catch(() => {
+        this.props.logout();
       });
   }
 
@@ -112,6 +121,9 @@ export default class TodoList extends React.Component {
         const index = tasks.findIndex(task => task.id == id);
         tasks.splice(index, 1);
         this.setState({tasks});
+      })
+      .catch(() => {
+        this.props.logout();
       });
   }
 
@@ -125,12 +137,16 @@ export default class TodoList extends React.Component {
     };
     
     return fetch('http://localhost:3000/api/todos/' + id, requestOptions)
-      .then(response => response.json());
+      .then(response => response.json())
+      .catch(() => {
+        this.props.logout();
+      });
   }
 }
 
 TodoList.propTypes = {
   user: PropTypes.object,
+  logout: PropTypes.func,
 };
 
 class TodoTable extends React.Component {

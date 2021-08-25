@@ -23,7 +23,11 @@ const fetchUserByToken = (req, res, next) => {
       req.user = user
       next()
     })
-    // TODO user is not exists
+    .catch(() => {
+      return res.status(401).send({
+        errMessage: 'User not found'
+      })
+    })
 }
 
 const app = express()

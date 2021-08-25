@@ -123,7 +123,7 @@ class LobbyPage extends React.Component {
             ? <TodoList user={this.state.user} />
             : this.state.currentPage == 'login'
               ? <Login login={this.login.bind(this)} />
-              : <Signup signup={this.signup.bind(this)} />
+              : <Signup signup={this.signup.bind(this)} logout={this.logout.bind(this)} />
           }
         </div>
       </div>
