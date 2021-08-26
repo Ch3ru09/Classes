@@ -98,6 +98,7 @@ exports.fetchByToken = (token) => {
   return db.getConn().query('select id, username, email, reg_time, token from users where token = ?', [token])
     .then(results => {
       const {id, username, email, reg_time, token} = results[0][0]
+      console.log('>>', {id, username, email, reg_time, token})
       return {
         id,
         username,

@@ -24,9 +24,7 @@ const fetchUserByToken = (req, res, next) => {
       next()
     })
     .catch(() => {
-      return res.status(401).send({
-        errMessage: 'User not found'
-      })
+      throw new Error('User not found')
     })
 }
 

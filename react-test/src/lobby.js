@@ -120,10 +120,10 @@ class LobbyPage extends React.Component {
         </header>
         <div className="lobbyBody">
           {this.state.user
-            ? <TodoList user={this.state.user} />
+            ? <TodoList user={this.state.user} logout={this.logout.bind(this)} />
             : this.state.currentPage == 'login'
               ? <Login login={this.login.bind(this)} />
-              : <Signup signup={this.signup.bind(this)} logout={this.logout.bind(this)} />
+              : <Signup signup={this.signup.bind(this)} />
           }
         </div>
       </div>
