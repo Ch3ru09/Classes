@@ -8,6 +8,8 @@ CREATE TABLE `tasks` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE tasks ADD image BLOB NULL;
+
 
 -- my_todos.users definition
 CREATE TABLE `users` (

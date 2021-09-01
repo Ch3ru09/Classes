@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './ressources/todo-list.css';
+import trashImage from './ressources/115789.png';
 
 export default class TodoList extends React.Component {
 
@@ -8,6 +9,7 @@ export default class TodoList extends React.Component {
     super(props);
     this.state = {
       tasks: [],
+      addImage: {},
     };
   }
 
@@ -16,6 +18,7 @@ export default class TodoList extends React.Component {
       .then(tasks => {
         this.setState({tasks});
       });
+      
   }
 
   render() {
@@ -25,8 +28,10 @@ export default class TodoList extends React.Component {
         <TodoForm addTodo={this.handleAddTodo.bind(this)} />
         <TodoTable
           tasks={this.state.tasks} 
+          logout={this.props.logout.bind(this)}
           removeTodo={this.handleRemoveTodo.bind(this)} 
-          updateTodo={this.handleUpdateTodo.bind(this)} 
+          updateTodo={this.handleUpdateTodo.bind(this)}
+          handleAddImage={this.handleAddImage.bind(this)}
         />
       </div>
     );
@@ -88,18 +93,17 @@ export default class TodoList extends React.Component {
   }
 
   addTodo({taskName, taskDescription}) {
-    var raw = JSON.stringify({
-      taskName,
-      taskDescription,
-    });
-    
+  
     var requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'x-user-token': this.props.user.token
       },
-      body: raw,
+      body: JSON.stringify({
+        taskName,
+        taskDescription,
+      }),
     };
     
     return fetch('http://localhost:3000/api/todos', requestOptions)
@@ -153,6 +157,51 @@ export default class TodoList extends React.Component {
         });
       });
   }
+
+  handleAddImage(event, id) {
+    event.preventDefault();
+
+    const image = event.target.files[0];
+    const data = new FormData();
+    data.append('photo',event.target.files[0]);
+    data.append('name', 'Test Name');
+    data.append('desc', 'Test description');
+
+    console.log('*>',image);
+    
+    this.doAddImage(data, id)
+      .then(todo => {
+        const tasks = this.state.tasks;
+        const index = tasks.findIndex(t => t.id == todo.id);
+        tasks.splice(index, 1, todo);
+        this.setState({tasks});
+      });
+  }
+
+  doAddImage(data, id) {
+
+    var requestOptions = {
+      method: 'POST',
+      headers: {
+        'x-user-token': this.props.user.token,
+        'Accept': 'application/json',
+      },
+      body: data,
+    };
+    
+    return fetch('http://localhost:3000/api/todos/image/' + id, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          console.log(response.json());
+          return response.json();
+        }
+        return response.json().then(() => {
+          this.props.logout();
+        });
+      }); 
+  }
+
+  
 }
 
 TodoList.propTypes = {
@@ -187,7 +236,16 @@ class TodoTable extends React.Component {
                   </td>
                   <td>{task.task_name}</td>
                   <td>{task.task_description}</td>
-                  <td><button onClick={() => this.props.removeTodo(task.id)} className="removeTask">X</button></td>
+                  <td>
+                    <input 
+                      type="file" 
+                      className="addImage" 
+                      onChange={event => this.props.handleAddImage(event, task.id)} 
+                      display={'image' in task ? 'none' : 'block'} />
+                    <button onClick={() => this.props.removeTodo(task.id)} className="removeTask">
+                      <img src={trashImage} alt="" height="15px" width="15px" />
+                    </button>
+                  </td>
                 </tr>
               );
             })}
@@ -200,9 +258,11 @@ class TodoTable extends React.Component {
 }
 
 TodoTable.propTypes = {
+  tasks: PropTypes.array,
+  logout: PropTypes.func,
   updateTodo: PropTypes.func,
   removeTodo: PropTypes.func,
-  tasks: PropTypes.array,
+  handleAddImage: PropTypes.func,
 };
 
 class TodoForm extends React.Component {
@@ -250,7 +310,7 @@ class TodoForm extends React.Component {
           onChange={this.handleInputChange} 
         />
         <input 
-          type='submit' 
+          type='submit'  
           value='Submit' 
           onClick={this.handleSubmit} 
           className="submitButton" />

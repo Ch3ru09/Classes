@@ -46,6 +46,7 @@
 
 td {
   padding: 5px 20px;
+  text-align: center;
 }
 
 .checkbox {
@@ -53,16 +54,32 @@ td {
   transform: translateX(-50%)
 }
 
+.addImage {
+  border-radius: 40px;
+  border: none;
+  color: aquamarine;
+  background-color: white;
+  transition: background-color 0.25s ease-in-out;
+}
+
+.addImage:hover {
+  color: white;
+  background-color: aquamarine;
+  transition: background-color 0.25s ease-in-out;
+  cursor: pointer;
+}
+
 .removeTask {
   border-radius: 40px;
   border: none;
-  margin-left: 50%;
-  transform: translateX(-50%);
   background-color: white;
   transition: background-color 0.25s ease-in-out;
+  font-size: 15px;
+  margin-left: 5px;
 }
 
 .removeTask:hover {
   background-color: crimson;
   transition: background-color 0.25s ease-in-out;
+  cursor: pointer;
 }

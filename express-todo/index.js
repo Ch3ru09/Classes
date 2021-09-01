@@ -24,7 +24,9 @@ const fetchUserByToken = (req, res, next) => {
       next()
     })
     .catch(() => {
-      throw new Error('User not found')
+      return res.status(401).send({
+        errMessage: 'User not found'
+      })
     })
 }
 
@@ -146,7 +148,6 @@ app.post('/api/login', (req, res) => {
   const {username, password} = req.body
   accountModel.loginPromise({username, password})
     .then(user => {
-      console.log('>>>', user)
       return res.json(user)
     })
     .catch(err => {
@@ -176,6 +177,18 @@ app.get('/api/todos', (req, res) => {
 app.put('/api/todos/:id', (req, res) => {
   const {status} = req.body
   todoModel.update(status, req.params.id, req.user.id)
+    .then(todo => {
+      if (todo) {
+        return res.json(todo)
+      }
+      return res.status(404).end()
+    })
+})
+
+app.post('/api/todos/image/:id', (req, res) => {
+  const image = req
+  console.log('->', image)
+  todoModel.image(image, req.params.id, req.user.id)
     .then(todo => {
       if (todo) {
         return res.json(todo)
