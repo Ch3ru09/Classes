@@ -163,11 +163,11 @@ export default class TodoList extends React.Component {
 
     const image = event.target.files[0];
     const data = new FormData();
-    data.append('photo',event.target.files[0]);
+    data.set('photo', image);
     data.append('name', 'Test Name');
     data.append('desc', 'Test description');
 
-    console.log('*>',image);
+    console.log('*> ', data);
     
     this.doAddImage(data, id)
       .then(todo => {
@@ -184,7 +184,6 @@ export default class TodoList extends React.Component {
       method: 'POST',
       headers: {
         'x-user-token': this.props.user.token,
-        'Accept': 'application/json',
       },
       body: data,
     };

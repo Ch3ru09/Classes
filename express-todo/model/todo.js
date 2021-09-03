@@ -43,7 +43,7 @@ exports.update = (checkstatus, id, userId) => {
 }
 
 exports.image = (image, id, userId) => {
-  return db.getConn().query('update tasks set image = ? where id = ? and user_id = ?', [image, id, userId])
+  return db.getConn().query('insert into tasks set image = ? where id = ? and user_id = ?', [image, id, userId])
     .then(([result]) => {
       if (result.affectedRows > 0) {
         return db.getConn().query('select * from tasks where id = ?', [id])

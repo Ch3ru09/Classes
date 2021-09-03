@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const cors = require('cors')
+const fileUpload = require('express-fileupload')
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
@@ -33,6 +34,7 @@ const fetchUserByToken = (req, res, next) => {
 const app = express()
 const port = 3000
 
+app.use(fileUpload())
 app.use('/static', express.static('public'))
 
 app.set('trust proxy', 1)
@@ -186,7 +188,7 @@ app.put('/api/todos/:id', (req, res) => {
 })
 
 app.post('/api/todos/image/:id', (req, res) => {
-  const image = req
+  const image = req.files
   console.log('->', image)
   todoModel.image(image, req.params.id, req.user.id)
     .then(todo => {
