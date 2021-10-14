@@ -162,12 +162,9 @@ export default class TodoList extends React.Component {
     event.preventDefault();
 
     const image = event.target.files[0];
+    console.log('<>', image);
     const data = new FormData();
     data.set('photo', image);
-    data.append('name', 'Test Name');
-    data.append('desc', 'Test description');
-
-    console.log('*> ', data);
     
     this.doAddImage(data, id)
       .then(todo => {

@@ -188,8 +188,8 @@ app.put('/api/todos/:id', (req, res) => {
 })
 
 app.post('/api/todos/image/:id', (req, res) => {
-  const image = req.files
-  console.log('->', image)
+  const image = req.files.photo
+  image.data = Buffer.from(image.data).toString('binary')
   todoModel.image(image, req.params.id, req.user.id)
     .then(todo => {
       if (todo) {

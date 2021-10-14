@@ -69,8 +69,8 @@ function getStoredPromise(username) {
     .then(([rows])=> {
       const user = rows[0]
       if (!user) {
-        console.debug('User is not exists. username=' + username)
-        throw new Error('User is not exists or password does not match.')
+        console.debug('User does not exist. username =' + username)
+        throw new Error('User does not exist or password does not match.')
       }
       return {
         userId: rows[0].id,
@@ -98,7 +98,7 @@ exports.fetchByToken = (token) => {
   return db.getConn().query('select id, username, email, reg_time, token from users where token = ?', [token])
     .then(results => {
       const {id, username, email, reg_time, token} = results[0][0]
-      console.log('>>', {id, username, email, reg_time, token})
+      console.debug('>>', {id, username, email, reg_time, token})
       return {
         id,
         username,
