@@ -169,10 +169,14 @@ app.post('/api/todos', (req, res) => {
     })
 })
 
-app.get('/api/todos', (req, res) => {
+app.get('/api/todos', (req, _res) => {
   todoModel.fetchTodos(req.user.id)
     .then(todos => {
-      return res.json(todos)
+      const data = new FormData()
+      data.set('user', todos)
+      console.log('<>>', data)
+
+      // return res.json(todos)
     })
 })
 
