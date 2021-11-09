@@ -1,13 +1,5 @@
 const db = require('./db')
 
-
-exports.getAll = (userId) => {
-  return db.getConn().query('select * from tasks where user_id = ?', [userId])
-    .then(([results]) => {
-      return results
-    })
-}
-
 exports.add = ({taskName, taskDescription, userId}) => {
   return db.getConn().query('INSERT into tasks SET ?', {
     task_name: taskName,

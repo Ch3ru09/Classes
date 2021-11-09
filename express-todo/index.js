@@ -121,7 +121,7 @@ app.get('/todo', (req, res) => {
       }
     })
     .then(userInfo => {
-      todoModel.getAll(userId)
+      todoModel.fetchTodos(userId)
         .then(results => {
           res.render('todo', { tasks: results, userId, userInfo })
         })
@@ -169,13 +169,10 @@ app.post('/api/todos', (req, res) => {
     })
 })
 
-app.get('/api/todos', (req, _res) => {
+app.get('/api/todos', (req, res) => {
   todoModel.fetchTodos(req.user.id)
     .then(todos => {
-      const data = new FormData()
-      data.set('user', todos)
-      console.log('<>>', data)
-
+      return res.json(todos)
       // return res.json(todos)
     })
 })

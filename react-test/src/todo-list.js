@@ -48,6 +48,7 @@ export default class TodoList extends React.Component {
     return fetch('http://localhost:3000/api/todos', requestOptions)
       .then(response => {
         if (response.ok) {
+          console.log('<<>>>', response.json());
           return response.json();
         }
         return response.json().then(() => {
@@ -162,7 +163,6 @@ export default class TodoList extends React.Component {
     event.preventDefault();
 
     const image = event.target.files[0];
-    console.log('<>', image);
     const data = new FormData();
     data.set('photo', image);
     
