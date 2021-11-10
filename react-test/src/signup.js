@@ -4,9 +4,7 @@ import './ressources/login-signup.css';
 
 export default function Signup(props) {
   return (
-    <>
-      <SignupPage signup={props.signup} />
-    </>
+    <SignupPage signup={props.signup} />
   );
 }
 Signup.propTypes = {

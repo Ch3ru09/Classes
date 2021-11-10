@@ -18,6 +18,7 @@ exports.add = ({taskName, taskDescription, userId}) => {
 exports.fetchTodos = (userId) => {
   return db.getConn().query('select * from tasks where user_id = ?', [userId])
     .then(([todos]) => {
+      console.log('>>', todos);
       return todos
     })
 }

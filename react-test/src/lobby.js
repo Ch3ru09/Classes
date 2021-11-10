@@ -16,9 +16,7 @@ export default class Lobby extends React.Component {
 
   render() {
     return (
-      <>
-        <LobbyPage />
-      </>
+      <LobbyPage />
     );
   }
   
