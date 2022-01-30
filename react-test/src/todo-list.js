@@ -241,7 +241,7 @@ class TodoTable extends React.Component {
                           className="addImage" 
                           onChange={event => this.props.handleAddImage(event, task.id)}
                           style={{display: task.image == null ? 'block' : 'none'}} />
-                        : <img src={`data:image;png/base64, ${task.image}`}
+                        : <img src={`data:image/jpeg;base64, ${task.image}`}
                           height = '500px'/>
                     }
                     
