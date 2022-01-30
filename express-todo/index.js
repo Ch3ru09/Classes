@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+const { Blob } = require('buffer')
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
@@ -190,10 +191,12 @@ app.put('/api/todos/:id', (req, res) => {
 
 app.post('/api/todos/image/:id', (req, res) => {
   const image = req.files.photo
-  image.data = Buffer.from(image.data).toString('binary')
+  image.data = Buffer.from(image.data).toString('base64')
+  console.log(image.data)
   todoModel.image(image, req.params.id, req.user.id)
     .then(todo => {
       if (todo) {
+        console.log(todo.image)
         return res.json(todo)
       }
       return res.status(404).end()

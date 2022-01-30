@@ -16,6 +16,9 @@ export default class TodoList extends React.Component {
   componentDidMount() {
     this.getTodos()
       .then(tasks => {
+        tasks.forEach(t => {
+          t.image = Buffer.from(t.image).toString('base64');
+        });
         this.setState({tasks});
       });
       
@@ -48,7 +51,6 @@ export default class TodoList extends React.Component {
     return fetch('http://localhost:3000/api/todos', requestOptions)
       .then(response => {
         if (response.ok) {
-          console.log('<<>>>', response.json());
           return response.json();
         }
         return response.json().then(() => {
@@ -188,7 +190,6 @@ export default class TodoList extends React.Component {
     return fetch('http://localhost:3000/api/todos/image/' + id, requestOptions)
       .then(response => {
         if (response.ok) {
-          console.log(response.json());
           return response.json();
         }
         return response.json().then(() => {
@@ -233,11 +234,17 @@ class TodoTable extends React.Component {
                   <td>{task.task_name}</td>
                   <td>{task.task_description}</td>
                   <td>
-                    <input 
-                      type="file" 
-                      className="addImage" 
-                      onChange={event => this.props.handleAddImage(event, task.id)} 
-                      display={'image' in task ? 'none' : 'block'} />
+                    {
+                      task.image == null
+                        ? <input 
+                          type="file" 
+                          className="addImage" 
+                          onChange={event => this.props.handleAddImage(event, task.id)}
+                          style={{display: task.image == null ? 'block' : 'none'}} />
+                        : <img src={`data:image;png/base64, ${task.image}`}
+                          height = '500px'/>
+                    }
+                    
                     <button onClick={() => this.props.removeTodo(task.id)} className="removeTask">
                       <img src={trashImage} alt="" height="15px" width="15px" />
                     </button>

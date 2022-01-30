@@ -1,4 +1,5 @@
 const db = require('./db')
+const { Blob } = require('buffer')
 
 exports.add = ({taskName, taskDescription, userId}) => {
   return db.getConn().query('INSERT into tasks SET ?', {
@@ -18,13 +19,12 @@ exports.add = ({taskName, taskDescription, userId}) => {
 exports.fetchTodos = (userId) => {
   return db.getConn().query('select * from tasks where user_id = ?', [userId])
     .then(([todos]) => {
-      console.log('>>', todos);
       return todos
     })
 }
 
 exports.update = (checkstatus, id, userId) => {
-  return db.getConn().query('update tasks set status = ? WHERE id = ? and user_id = ?', [checkstatus, id, userId])
+  return db.getConn().query('update tasks set status = ? where id = ? and user_id = ?', [checkstatus, id, userId])
     .then(([result]) => {
       if (result.affectedRows > 0) {
         return db.getConn().query('select * from tasks where id = ?', [id])
@@ -37,13 +37,13 @@ exports.update = (checkstatus, id, userId) => {
 
 exports.image = (image, id, userId) => {
   // !! ALTER TABLE my_todos.tasks MODIFY COLUMN image LONGBLOB NULL;
-
-  return db.getConn().query('UPDATE tasks SET image = ? WHERE id = ? AND user_id = ?', [image.data, id, userId])
+  console.log(image)
+  return db.getConn().query('update tasks set image = ? where id = ? and user_id = ?', [image.data, id, userId])
     .then(([result]) => {
       if (result.affectedRows > 0) {
         return db.getConn().query('select * from tasks where id = ?', [id])
           .then(([rows]) => {
-            return rows[0]  
+            return rows[0]
           })
       } 
     })
