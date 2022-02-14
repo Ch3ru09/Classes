@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const cookieSession = require('cookie-session')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
-const { Blob } = require('buffer')
+const fs = require('fs/promises');
 
 const todoModel = require('./model/todo')
 const accountModel = require('./model/accounts')
@@ -191,16 +191,20 @@ app.put('/api/todos/:id', (req, res) => {
 
 app.post('/api/todos/image/:id', (req, res) => {
   const image = req.files.photo
-  image.data = Buffer.from(image.data).toString('base64')
-  console.log(image.data)
-  todoModel.image(image, req.params.id, req.user.id)
-    .then(todo => {
-      if (todo) {
-        console.log(todo.image)
-        return res.json(todo)
-      }
-      return res.status(404).end()
-    })
+  // console.log('>>', image.md5 + '.' + image.mimetype.split('/')[1])
+  const tempPath = image.md5 + '.' + image.mimetype.split('/')[1]
+  fs.writeFile('./images/'+ tempPath, image.data)
+  todoModel.addimage()
+
+  // image.data = Buffer.from(image.data).toString('base64')
+  // console.log(image.data)
+  // todoModel.image(image, req.params.id, req.user.id)
+  //   .then(todo => {
+  //     if (todo) {
+  //       return res.json(todo)
+  //     }
+  //     return res.status(404).end()
+  //   })
 })
 
 app.delete('/api/todos/:id', (req, res) => {

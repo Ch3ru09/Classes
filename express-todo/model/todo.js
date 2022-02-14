@@ -35,20 +35,24 @@ exports.update = (checkstatus, id, userId) => {
     })
 }
 
-exports.image = (image, id, userId) => {
-  // !! ALTER TABLE my_todos.tasks MODIFY COLUMN image LONGBLOB NULL;
-  console.log(image)
-  return db.getConn().query('update tasks set image = ? where id = ? and user_id = ?', [image.data, id, userId])
-    .then(([result]) => {
-      if (result.affectedRows > 0) {
-        return db.getConn().query('select * from tasks where id = ?', [id])
-          .then(([rows]) => {
-            return rows[0]
-          })
-      } 
-    })
-}
+exports.addimage = (id, md5, taskId) => {
 
+}
+/*
+// exports.image = (image, id, userId) => {
+//   // ALTER TABLE my_todos.tasks MODIFY COLUMN image LONGBLOB NULL;
+//   return db.getConn().query('update tasks set image = ? where id = ? and user_id = ?', [image.data, id, userId])
+//     .then(([result]) => {
+//       if (result.affectedRows > 0) {
+//         return db.getConn().query('select * from tasks where id = ?', [id])
+//           .then(([rows]) => {
+            
+//             return rows[0]
+//           })
+//       } 
+//     })
+// }
+*/
 exports.remove = (id, userId) => {
   return db.getConn().query('delete from tasks where id = ? AND user_id = ?', [id, userId])
     .then(() => {
