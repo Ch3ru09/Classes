@@ -6,13 +6,15 @@ CREATE TABLE `tasks` (
   `status` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'unfinished',
   `user_id` int unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `images` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `taskid` int unsigned NOT NULL,
+  `task_id` int unsigned NOT NULL,
   `path` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
-)
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+);
 -- my_todos.users definition
 CREATE TABLE `users` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,

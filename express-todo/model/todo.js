@@ -35,9 +35,21 @@ exports.update = (checkstatus, id, userId) => {
     })
 }
 
-exports.addimage = (id, md5, taskId) => {
-
+exports.addimage = ({taskId, userId, md5}) => {
+  return db.getConn().query('INSERT into images SET ?', {
+    task_id: taskId,
+    user_id: userId,
+    path: md5
+  })
+    .then(result => {
+      const id = result[0].insertId;
+      return db.getConn().query('select task_id, path from images where id = ?', [id])  
+    })
+    .then(([results]) => {
+      return results[0];
+    })
 }
+
 /*
 // exports.image = (image, id, userId) => {
 //   // ALTER TABLE my_todos.tasks MODIFY COLUMN image LONGBLOB NULL;

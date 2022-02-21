@@ -16,9 +16,6 @@ export default class TodoList extends React.Component {
   componentDidMount() {
     this.getTodos()
       .then(tasks => {
-        tasks.forEach(t => {
-          t.image = Buffer.from(t.image).toString('base64');
-        });
         this.setState({tasks});
       });
       
@@ -64,7 +61,7 @@ export default class TodoList extends React.Component {
     this.updateTodo(id, {status})
       .then(todo => {
         const tasks = this.state.tasks;
-        const index = tasks.findIndex(t => t.id == todo.id);
+        const index = tasks.findIndex(t => t.id === todo.id);
         tasks.splice(index, 1, todo);
         this.setState({tasks});
       });
@@ -135,7 +132,7 @@ export default class TodoList extends React.Component {
     this.removeTodo(id)
       .then(id => {
         const tasks = this.state.tasks;
-        const index = tasks.findIndex(task => task.id == id);
+        const index = tasks.findIndex(task => task.id === id);
         tasks.splice(index, 1);
         this.setState({tasks});
       });
@@ -170,15 +167,15 @@ export default class TodoList extends React.Component {
     
     this.doAddImage(data, id)
       .then(todo => {
+        console.log(todo);
         const tasks = this.state.tasks;
-        const index = tasks.findIndex(t => t.id == todo.id);
+        const index = tasks.findIndex(t => t.id === todo.id);
         tasks.splice(index, 1, todo);
         this.setState({tasks});
       });
   }
 
   doAddImage(data, id) {
-
     var requestOptions = {
       method: 'POST',
       headers: {
@@ -197,8 +194,6 @@ export default class TodoList extends React.Component {
         });
       }); 
   }
-
-  
 }
 
 TodoList.propTypes = {
@@ -227,7 +222,7 @@ class TodoTable extends React.Component {
                   <td>
                     <input 
                       type="checkbox"
-                      checked={task.status == 'finished'}
+                      checked={task.status === 'finished'}
                       onChange={(event) => this.props.updateTodo(task.id, event.target)} 
                       className="checkbox" />
                   </td>
@@ -241,8 +236,7 @@ class TodoTable extends React.Component {
                           className="addImage" 
                           onChange={event => this.props.handleAddImage(event, task.id)}
                           style={{display: task.image == null ? 'block' : 'none'}} />
-                        : <img src={`data:image/jpeg;base64, ${task.image}`}
-                          height = '500px'/>
+                        : <img src={`data:image/jpeg;base64, ${task.image}`} height='100px' alt="" />
                     }
                     
                     <button onClick={() => this.props.removeTodo(task.id)} className="removeTask">

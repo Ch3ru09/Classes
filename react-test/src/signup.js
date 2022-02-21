@@ -60,7 +60,7 @@ class SignupPage extends React.Component {
               name='password'
               className="formInput"
               placeholder='password'
-              value ={this.state.password}
+              value={this.state.password}
               onChange={this.handleInputChange} />
             <input 
               type='submit' 

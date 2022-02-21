@@ -37,6 +37,7 @@ const port = 3000
 
 app.use(fileUpload())
 app.use('/static', express.static('public'))
+app.use('/images', express.static('images'))
 
 app.set('trust proxy', 1)
 
@@ -52,7 +53,7 @@ app.use(cookieSession({
 }))
 
 app.get('/', (req, res) => {
-  res.render('lobby')
+
 })
 
 app.get('/login', (req, res) => {
@@ -191,20 +192,25 @@ app.put('/api/todos/:id', (req, res) => {
 
 app.post('/api/todos/image/:id', (req, res) => {
   const image = req.files.photo
-  // console.log('>>', image.md5 + '.' + image.mimetype.split('/')[1])
   const tempPath = image.md5 + '.' + image.mimetype.split('/')[1]
-  fs.writeFile('./images/'+ tempPath, image.data)
-  todoModel.addimage()
-
-  // image.data = Buffer.from(image.data).toString('base64')
-  // console.log(image.data)
-  // todoModel.image(image, req.params.id, req.user.id)
-  //   .then(todo => {
-  //     if (todo) {
-  //       return res.json(todo)
-  //     }
-  //     return res.status(404).end()
-  //   })
+  fs.stat('./images/'+ tempPath)
+    .catch(() => {
+      fs.writeFile('./images/'+ tempPath, image.data)
+    })
+  todoModel.addimage({taskId:req.params.id, userId: req.user.id, md5: image.md5})
+    .then(imageInfo => {
+      return res.json(imageInfo)
+    });
+  
+  // // image.data = Buffer.from(image.data).toString('base64')
+  // // console.log(image.data)
+  // // todoModel.image(image, req.params.id, req.user.id)
+  // //   .then(todo => {
+  // //     if (todo) {
+  // //       return res.json(todo)
+  // //     }
+  // //     return res.status(404).end()
+  // //   })
 })
 
 app.delete('/api/todos/:id', (req, res) => {

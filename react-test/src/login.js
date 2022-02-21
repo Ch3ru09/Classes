@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
 
   handleLogin(event) {
     event.preventDefault();
-    if (this.state.username.trim() != '' && this.state.password.trim() != '') {
+    if (this.state.username.trim() !== '' && this.state.password.trim() !== '') {
       this.doLogin(this.state)
         .then(user => {
           this.props.login(user);

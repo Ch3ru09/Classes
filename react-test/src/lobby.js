@@ -1,5 +1,5 @@
 import React from 'react';
-import propTypes from 'prop-types';
+// import propTypes from 'prop-types';
 import localStorage from 'local-storage';
 
 import Login from './login';
@@ -10,9 +10,9 @@ import './ressources/lobby.css';
 
 export default class Lobby extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (
@@ -119,7 +119,7 @@ class LobbyPage extends React.Component {
         <div className="lobbyBody">
           {this.state.user
             ? <TodoList user={this.state.user} logout={this.logout.bind(this)} />
-            : this.state.currentPage == 'login'
+            : this.state.currentPage === 'login'
               ? <Login login={this.login.bind(this)} />
               : <Signup signup={this.signup.bind(this)} />
           }
