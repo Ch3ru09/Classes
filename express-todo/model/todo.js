@@ -8,7 +8,7 @@ exports.add = ({taskName, taskDescription, userId}) => {
     user_id: userId
   })
     .then(result => {
-      const id = result[0].insertId
+      const id = result[0].insertId;
       return db.getConn().query('select * from tasks where id = ?', [id])
     })
     .then(([results]) => {
@@ -27,7 +27,7 @@ exports.update = (checkstatus, id, userId) => {
   return db.getConn().query('update tasks set status = ? where id = ? and user_id = ?', [checkstatus, id, userId])
     .then(([result]) => {
       if (result.affectedRows > 0) {
-        return db.getConn().query('select * from tasks where id = ?', [id])
+        db.getConn().query('select * from tasks where id = ?', [id])
           .then(([rows]) => {
             return rows[0]
           })
@@ -35,20 +35,29 @@ exports.update = (checkstatus, id, userId) => {
     })
 }
 
-exports.addimage = ({taskId, userId, md5}) => {
+exports.getImages = (userId) => {
+  return db.getConn().query('select * from images where user_id = ?', [userId])
+    .then(([images]) => {
+      return images
+    })
+}
+
+exports.addimage = ({taskId, userId, md5, mimetype}) => {
   return db.getConn().query('INSERT into images SET ?', {
     task_id: taskId,
     user_id: userId,
-    path: md5
+    path: md5,
+    mimetype: mimetype,
   })
     .then(result => {
       const id = result[0].insertId;
-      return db.getConn().query('select task_id, path from images where id = ?', [id])  
+      return db.getConn().query('select * from images where id = ?', [id])
     })
     .then(([results]) => {
-      return results[0];
+      return results[0]
     })
 }
+
 
 /*
 // exports.image = (image, id, userId) => {

@@ -10,6 +10,7 @@ export default class TodoList extends React.Component {
     this.state = {
       tasks: [],
       addImage: {},
+      images: [],
     };
   }
 
@@ -17,8 +18,11 @@ export default class TodoList extends React.Component {
     this.getTodos()
       .then(tasks => {
         this.setState({tasks});
+      });  
+    this.getImages()
+      .then(images => {
+        this.setState({images});
       });
-      
   }
 
   render() {
@@ -27,7 +31,8 @@ export default class TodoList extends React.Component {
         <div className="todoContent" />
         <TodoForm addTodo={this.handleAddTodo.bind(this)} />
         <TodoTable
-          tasks={this.state.tasks} 
+          tasks={this.state.tasks}
+          images={this.state.images}
           logout={this.props.logout.bind(this)}
           removeTodo={this.handleRemoveTodo.bind(this)} 
           updateTodo={this.handleUpdateTodo.bind(this)}
@@ -55,6 +60,25 @@ export default class TodoList extends React.Component {
         });
       });
   }
+
+  getImages() {
+    var requestOptions = {
+      method: 'GET',
+      headers: {
+        'x-user-token': this.props.user.token
+      }
+    }; 
+
+    return fetch('http://localhost:3000/api/todos/image', requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json().then(() => {
+          this.props.logout();
+        });
+      });
+  } 
 
   handleUpdateTodo(id, target) {
     const status = target.checked ? 'finished' : 'unfinished';
@@ -166,12 +190,10 @@ export default class TodoList extends React.Component {
     data.set('photo', image);
     
     this.doAddImage(data, id)
-      .then(todo => {
-        console.log(todo);
-        const tasks = this.state.tasks;
-        const index = tasks.findIndex(t => t.id === todo.id);
-        tasks.splice(index, 1, todo);
-        this.setState({tasks});
+      .then(image => {
+        const images = this.state.images;
+        images.push(image);
+        this.setState({images});
       });
   }
 
@@ -229,16 +251,23 @@ class TodoTable extends React.Component {
                   <td>{task.task_name}</td>
                   <td>{task.task_description}</td>
                   <td>
-                    {
-                      task.image == null
-                        ? <input 
-                          type="file" 
-                          className="addImage" 
-                          onChange={event => this.props.handleAddImage(event, task.id)}
-                          style={{display: task.image == null ? 'block' : 'none'}} />
-                        : <img src={`data:image/jpeg;base64, ${task.image}`} height='100px' alt="" />
-                    }
+                    <input 
+                      type="file" 
+                      className="addImage" 
+                      onChange={event => this.props.handleAddImage(event, task.id)}
+                      style={{display: task.image == null ? 'block' : 'none'}} />
+                    <div>
+                      {this.props.images.map(image => {
+                        if (image.task_id === task.id) {
+                          return (
+                            <img key={image.id} src={'images/'+image.path+'.'+image.mimetype} alt="" width="30px" height="30px"></img>
+                          );
+                        } 
+                        return null;
+                      })}
+                    </div>
                     
+
                     <button onClick={() => this.props.removeTodo(task.id)} className="removeTask">
                       <img src={trashImage} alt="" height="15px" width="15px" />
                     </button>
@@ -256,6 +285,7 @@ class TodoTable extends React.Component {
 
 TodoTable.propTypes = {
   tasks: PropTypes.array,
+  images: PropTypes.array,
   logout: PropTypes.func,
   updateTodo: PropTypes.func,
   removeTodo: PropTypes.func,

@@ -190,6 +190,13 @@ app.put('/api/todos/:id', (req, res) => {
     })
 })
 
+app.get('/api/todos/image', (req, res) => {
+  todoModel.getImages(req.user.id)
+    .then(images => {
+      return res.json(images)
+    })
+})
+
 app.post('/api/todos/image/:id', (req, res) => {
   const image = req.files.photo
   const tempPath = image.md5 + '.' + image.mimetype.split('/')[1]
@@ -197,9 +204,9 @@ app.post('/api/todos/image/:id', (req, res) => {
     .catch(() => {
       fs.writeFile('./images/'+ tempPath, image.data)
     })
-  todoModel.addimage({taskId:req.params.id, userId: req.user.id, md5: image.md5})
-    .then(imageInfo => {
-      return res.json(imageInfo)
+  todoModel.addimage({taskId:req.params.id, userId: req.user.id, md5: image.md5, mimetype:image.mimetype.split('/')[1]})
+    .then(image => {
+      return res.json(image)
     });
   
   // // image.data = Buffer.from(image.data).toString('base64')

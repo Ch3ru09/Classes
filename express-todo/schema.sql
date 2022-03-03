@@ -5,6 +5,7 @@ CREATE TABLE `tasks` (
   `task_description` varchar(255) DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT 'unfinished',
   `user_id` int unsigned NOT NULL,
+  `images_id` varchar(255) NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
